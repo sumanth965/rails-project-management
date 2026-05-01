@@ -95,7 +95,7 @@
       </div>
       <div class="kanban-board">
         <% Task.statuses.keys.each do |status| %>
-          <% tasks_in_col = @project.tasks.where(status: status).order(due_date: :asc) %>
+          <% tasks_in_col = @kanban_tasks_by_status.fetch(status, []) %>
           <% dot_color = case status when "todo" then "#94a3b8" when "in_progress" then "#3b82f6" else "#22c55e" end %>
           <div class="kanban-col">
             <div class="kanban-col__header">
@@ -103,7 +103,7 @@
                 <span class="kanban-col__dot" style="background:<%= dot_color %>"></span>
                 <%= status.humanize %>
               </div>
-              <span class="kanban-col__count"><%= tasks_in_col.count %></span>
+              <span class="kanban-col__count"><%= @task_counts_by_status.fetch(status, 0) %></span>
             </div>
             <div class="kanban-col__body">
               <% if tasks_in_col.any? %>
