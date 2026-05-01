@@ -9,5 +9,7 @@ class User < ApplicationRecord
   has_many :projects, through: :project_memberships
   has_many :assigned_tasks, class_name: "Task", foreign_key: "assigned_user_id", dependent: :nullify
 
+  has_secure_token :api_token
+
   validates :name, presence: true
 end

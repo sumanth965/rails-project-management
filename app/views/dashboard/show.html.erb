@@ -221,13 +221,13 @@
           <% @recent_tasks.first(4).each do |task| %>
             <div style="padding: 10px 16px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid #f1f5f9;">
               <% icon, color = case task.status 
-                 when 'completed' then ['add_circle', '#10b981'] 
+                 when 'done' then ['add_circle', '#10b981'] 
                  when 'todo' then ['comment', '#3b82f6'] 
                  else ['error_outline', '#ef4444'] 
                  end %>
               <span class="material-symbols-outlined" style="font-size: 20px; color: <%= color %>;"><%= icon %></span>
               <div style="font-size: 12px; font-weight: 500; flex: 1;">
-                <%= task.status == 'completed' ? "Task \"#{task.title}\" marked as completed" : "Task \"#{task.title}\" updated recently" %>
+                <%= task.status == 'done' ? "Task \"#{task.title}\" marked as done" : "Task \"#{task.title}\" updated recently" %>
               </div>
             </div>
           <% end %>

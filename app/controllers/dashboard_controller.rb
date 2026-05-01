@@ -1,4 +1,5 @@
 class DashboardController < ApplicationController
+  include ProjectAccess
   def show
     @projects = accessible_projects
                 .includes(:owner, :tasks)
