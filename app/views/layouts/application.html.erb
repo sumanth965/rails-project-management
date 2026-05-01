@@ -1,189 +1,48 @@
 <!DOCTYPE html>
-<html class="light" lang="en">
+<html lang="en">
 <head>
-  <title><%= content_for(:title) || "Clariti PM" %></title>
+  <title><%= content_for(:title) || "Smart Project Management System" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta charset="utf-8"/>
-  
+
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <!-- Premium Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  
-  <script id="tailwind-config">
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          "colors": {
-            "primary-fixed-dim": "#bec6e0",
-            "tertiary-fixed": "#89f5e7",
-            "on-tertiary-container": "#0c9488",
-            "tertiary": "#000000",
-            "on-error": "#ffffff",
-            "error-container": "#ffdad6",
-            "surface": "#f8f9ff",
-            "surface-container-highest": "#d3e4fe",
-            "surface-dim": "#cbdbf5",
-            "on-primary": "#ffffff",
-            "on-surface": "#0b1c30",
-            "tertiary-container": "#00201d",
-            "background": "#f8f9ff",
-            "on-surface-variant": "#45464d",
-            "surface-container-high": "#dce9ff",
-            "inverse-primary": "#bec6e0",
-            "tertiary-fixed-dim": "#6bd8cb",
-            "inverse-surface": "#213145",
-            "on-secondary-fixed": "#0f0069",
-            "surface-container-lowest": "#ffffff",
-            "surface-bright": "#f8f9ff",
-            "primary": "#000000",
-            "surface-container": "#e5eeff",
-            "secondary-container": "#645efb",
-            "secondary": "#4b41e1",
-            "on-secondary-container": "#fffbff",
-            "surface-tint": "#565e74",
-            "on-primary-fixed-variant": "#3f465c",
-            "secondary-fixed-dim": "#c3c0ff",
-            "on-background": "#0b1c30",
-            "primary-fixed": "#dae2fd",
-            "on-tertiary-fixed-variant": "#005049",
-            "on-secondary": "#ffffff",
-            "outline": "#76777d",
-            "secondary-fixed": "#e2dfff",
-            "on-tertiary-fixed": "#00201d",
-            "on-primary-container": "#7c839b",
-            "primary-container": "#131b2e",
-            "inverse-on-surface": "#eaf1ff",
-            "error": "#ba1a1a",
-            "surface-variant": "#d3e4fe",
-            "surface-container-low": "#eff4ff",
-            "on-error-container": "#93000a",
-            "on-secondary-fixed-variant": "#3323cc",
-            "on-primary-fixed": "#131b2e",
-            "outline-variant": "#c6c6cd",
-            "on-tertiary": "#ffffff"
-          },
-          "borderRadius": {
-            "DEFAULT": "0.25rem",
-            "lg": "0.5rem",
-            "xl": "0.75rem",
-            "full": "9999px"
-          },
-          "fontFamily": {
-            "sans": ["Manrope", "sans-serif"],
-            "headline": ["Manrope", "sans-serif"]
-          }
-        },
-      },
-    }
-  </script>
-
-  <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    .glass-card {
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
-    /* Simple reset for standard Rails bits */
-    body { font-family: 'Manrope', sans-serif; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   <%= yield :head %>
 </head>
 
-<body class="bg-surface text-on-surface antialiased min-h-screen">
+<body>
   <% if user_signed_in? %>
-    <!-- Authenticated Layout -->
-    <nav class="bg-primary-container border-b border-outline-variant sticky top-0 z-50">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16 items-center">
-          <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-on-primary rounded-lg flex items-center justify-center">
-              <span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">dataset</span>
-            </div>
-            <a href="<%= root_path %>" class="text-on-primary font-bold text-lg">Clariti PM</a>
-            <div class="hidden md:flex ml-10 space-x-4">
-              <%= link_to "Projects", projects_path, class: "text-on-primary-container/80 hover:text-on-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
-            </div>
-          </div>
-          
-          <div class="flex items-center gap-4">
-            <div class="hidden sm:block text-right">
-              <p class="text-xs text-on-primary-container/60">Signed in as</p>
-              <p class="text-sm font-semibold text-on-primary"><%= current_user.name %></p>
-            </div>
-            <div class="flex items-center gap-2">
-              <%= link_to edit_user_registration_path, class: "p-2 text-on-primary-container/80 hover:text-on-primary hover:bg-white/10 rounded-full transition-all" do %>
-                <span class="material-symbols-outlined">settings</span>
-              <% end %>
-              <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-2 bg-error hover:bg-error/90 text-on-error px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95" do %>
-                <span class="material-symbols-outlined text-sm">logout</span>
-                Logout
-              <% end %>
-            </div>
-          </div>
+    <header class="topbar">
+      <div class="topbar__content">
+        <div class="brand">💬 Smart Project Management System</div>
+        <nav class="topbar__nav">
+          <%= link_to "Dashboard", root_path, class: "active" %>
+          <%= link_to "Projects", projects_path %>
+          <a href="#">Team</a>
+          <a href="#">Admin Panel</a>
+        </nav>
+        <div class="topbar__right">
+          <span>Hi, <%= current_user.name %></span>
+          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn" %>
         </div>
       </div>
-    </nav>
+    </header>
 
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="app-shell">
       <%= render "shared/flash" %>
       <%= yield %>
     </main>
-
   <% else %>
-    <!-- Transactional (Login/Signup) Layout -->
-    <main class="flex min-h-screen">
-      <!-- Left Side: Brand Narrative & Visual -->
-      <section class="hidden lg:flex lg:w-1/2 relative bg-primary-container items-center justify-center p-12 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-primary-container via-primary-container to-secondary opacity-40"></div>
-        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-secondary-container rounded-full blur-[120px] opacity-20"></div>
-        <div class="relative z-10 max-w-lg">
-          <div class="flex items-center gap-2 mb-12">
-            <div class="w-10 h-10 bg-on-primary rounded-lg flex items-center justify-center">
-              <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">dataset</span>
-            </div>
-            <span class="text-on-primary font-bold text-2xl tracking-tight">Clariti PM</span>
-          </div>
-          <h1 class="text-on-primary text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
-            Accelerate your team's velocity
-          </h1>
-          <p class="text-on-primary-container text-lg lg:text-xl mb-12 opacity-90 leading-relaxed">
-            The enterprise-grade platform for high-performance project management. Coordinate complex workflows with executive clarity.
-          </p>
-          <div class="relative rounded-2xl overflow-hidden border border-on-primary-fixed-variant shadow-2xl">
-            <img class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVU7ZZhNKLuASwxZ2e0tEp3w0XPFLsvK_w_QwfKizCvbqcEUWdIf0MT0TDT-J68M1wXoBfqfZkBoSx-hyDXy7yWczGDIG9W3pWUXYMxgEa67TqZBsqOQTizJgXSWHAO1SdvsY3RP4zcE1ZdvpP4wJaNES1v_RhUbjxoNH1LBcR82WTnB87aI-SN55nGPj2L_1k72jnI2J0GpUeNmWKiqjXo_ZdJW58R0rCz13dtfohoQ3w0lX2uPAJY2XpcoXVK0io91ZKVB_rF61E" alt="Dashboard Mockup"/>
-            <div class="absolute inset-0 bg-gradient-to-t from-primary-container/40 to-transparent"></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Right Side: Content (Forms) -->
-      <section class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-surface">
-        <div class="w-full max-w-md">
-          <%= render "shared/flash" %>
-          <%= yield %>
-        </div>
-      </section>
-    </main>
-
-    <footer class="fixed bottom-0 w-full py-4 px-8 bg-transparent pointer-events-none">
-      <div class="max-w-7xl mx-auto flex justify-center lg:justify-end">
-        <span class="text-on-surface-variant/40 text-xs pointer-events-auto">
-          © 2024 Clariti Project Management. All rights reserved.
-        </span>
+    <main class="auth-shell">
+      <div class="auth-shell__box">
+        <%= render "shared/flash" %>
+        <%= yield %>
       </div>
-    </footer>
+    </main>
   <% end %>
 </body>
 </html>

@@ -1,13 +1,71 @@
-<div class="d-flex justify-content-between align-items-center mb-4">
-  <div>
-    <h1 class="mb-1">Dashboard</h1>
-    <p class="text-muted mb-0">Welcome back, <%= current_user.name %>. Here's your delivery snapshot.</p>
-  </div>
-  <%= link_to "New Project", new_project_path, class: "btn btn-primary" %>
-</div>
+<div class="dashboard-page">
+  <section class="dashboard-welcome">
+    <h1>Welcome, <%= current_user.name %>!</h1>
+    <p>Manage your tasks and projects efficiently.</p>
+  </section>
 
-<div class="row g-3 mb-4">
-  <div class="col-md-4"><div class="card p-3"><div class="text-muted">Projects</div><div class="fs-3 fw-semibold"><%= @projects.count %></div></div></div>
-  <div class="col-md-4"><div class="card p-3"><div class="text-muted">Open Tasks</div><div class="fs-3 fw-semibold"><%= @recent_tasks.reject(&:done?).count %></div></div></div>
-  <div class="col-md-4"><div class="card p-3"><div class="text-muted">Overdue Tasks</div><div class="fs-3 fw-semibold text-danger"><%= @recent_tasks.count(&:overdue?) %></div></div></div>
+  <section class="stats-grid">
+    <article class="stat-card stat-card--red">
+      <p class="stat-card__label">Tasks Due Today</p>
+      <p class="stat-card__value"><%= @recent_tasks.count { |task| task.due_date == Date.current && !task.done? } %></p>
+    </article>
+    <article class="stat-card stat-card--blue">
+      <p class="stat-card__label">Projects in Progress</p>
+      <p class="stat-card__value"><%= @projects.count { |project| project.tasks.any? && project.tasks.any? { |task| !task.done? } } %></p>
+    </article>
+    <article class="stat-card stat-card--green">
+      <p class="stat-card__label">Completed Tasks</p>
+      <p class="stat-card__value"><%= @recent_tasks.count(&:done?) %></p>
+    </article>
+    <article class="stat-card stat-card--purple">
+      <p class="stat-card__label">Team Members</p>
+      <p class="stat-card__value"><%= User.count %></p>
+    </article>
+  </section>
+
+  <section class="dashboard-content-grid">
+    <article class="panel panel--board">
+      <header class="panel__header"><h2>Task Board</h2></header>
+      <div class="kanban-board">
+        <div class="kanban-column">
+          <h3>To-Do</h3>
+          <% @recent_tasks.select { |task| !task.done? && task.status != "in_progress" }.first(4).each do |task| %>
+            <div class="task-card"><%= task.title %></div>
+          <% end %>
+        </div>
+        <div class="kanban-column">
+          <h3>In Progress</h3>
+          <% @recent_tasks.select { |task| task.status == "in_progress" }.first(4).each do |task| %>
+            <div class="task-card"><%= task.title %></div>
+          <% end %>
+        </div>
+        <div class="kanban-column">
+          <h3>Done</h3>
+          <% @recent_tasks.select(&:done?).first(4).each do |task| %>
+            <div class="task-card task-card--done"><%= task.title %></div>
+          <% end %>
+        </div>
+      </div>
+    </article>
+
+    <div class="side-panels">
+      <article class="panel">
+        <header class="panel__header"><h2>Upcoming Deadlines</h2></header>
+        <ul class="list-items">
+          <% @recent_tasks.reject(&:done?).sort_by(&:due_date).first(3).each do |task| %>
+            <li><span>●</span> <%= task.title %> - <strong><%= task.due_date&.strftime("%b %-d") || "No date" %></strong></li>
+          <% end %>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <header class="panel__header"><h2>Notifications</h2></header>
+        <ul class="list-items">
+          <li><span>●</span> New update on project tasks.</li>
+          <li><span>●</span> A task status was marked completed.</li>
+          <li><span>●</span> Team sync scheduled for 3 PM.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
 </div>
