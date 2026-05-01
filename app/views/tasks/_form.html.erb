@@ -32,6 +32,11 @@
   </div>
 
   <div class="mb-3">
+    <%= form.label :priority, class: "form-label" %>
+    <%= form.select :priority, Task.priorities.keys.map { |priority| [priority.humanize, priority] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="mb-3">
     <%= form.label :assigned_user_id, "Assigned user", class: "form-label" %>
     <%= form.collection_select :assigned_user_id, @project.members, :id, :name, { prompt: "Unassigned" }, class: "form-select" %>
   </div>

@@ -1,6 +1,6 @@
 class TasksController < ApplicationController
   before_action :set_project
-  before_action :set_task, only: %i[show edit update destroy]
+  before_action :set_task, only: %i[show edit update destroy move]
   before_action :authorize_project!
 
   def show; end
@@ -34,6 +34,14 @@ class TasksController < ApplicationController
     redirect_to project_path(@project), notice: "Task deleted successfully."
   end
 
+  def move
+    if @task.update(status: params[:status])
+      head :ok
+    else
+      render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_project
@@ -53,6 +61,6 @@ class TasksController < ApplicationController
   end
 
   def task_params
-    params.require(:task).permit(:title, :description, :due_date, :status, :assigned_user_id)
+    params.require(:task).permit(:title, :description, :due_date, :status, :priority, :assigned_user_id)
   end
 end

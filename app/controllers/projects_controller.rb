@@ -17,7 +17,17 @@ class ProjectsController < ApplicationController
     @projects = @projects.order(deadline: :asc)
   end
 
-  def show; end
+  def show
+    @task_query = params[:task_q].to_s.strip
+    @task_status = params[:task_status].to_s
+    @task_priority = params[:task_priority].to_s
+
+    tasks_scope = @project.tasks.includes(:assigned_user)
+    @tasks = tasks_scope.search(@task_query)
+                       .for_status(@task_status)
+                       .for_priority(@task_priority)
+                       .order(:due_date)
+  end
 
   def new
     @project = current_user.owned_projects.build

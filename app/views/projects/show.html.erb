@@ -29,7 +29,7 @@
         <h2 class="h5">Project details</h2>
         <p class="text-muted"><%= @project.description.presence || "No description provided." %></p>
         <div class="mb-3"><%= status_badge(@project.status) %></div>
-        <% if @project.tasks.any? %>
+        <% if @tasks.any? %>
           <div class="mb-3">
             <div class="progress" style="height: 14px;">
               <div class="progress-bar bg-success" role="progressbar" style="width: <%= @project.progress_percentage %>%" aria-valuenow="<%= @project.progress_percentage %>" aria-valuemin="0" aria-valuemax="100">
@@ -98,7 +98,7 @@
                 </tr>
               </thead>
               <tbody>
-                <% @project.tasks.order(:due_date).each do |task| %>
+                <% @tasks.each do |task| %>
                   <tr>
                     <td><%= link_to task.title, project_task_path(@project, task) %></td>
                     <td>
@@ -120,6 +120,33 @@
         <% else %>
           <div class="alert alert-light mb-0">No tasks added yet. Use the New Task button to start tracking work.</div>
         <% end %>
+      </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Kanban board</h2>
+        <div class="row g-3">
+          <% Task.statuses.keys.each do |status| %>
+            <div class="col-md-4">
+              <div class="border rounded p-2 h-100">
+                <div class="fw-semibold mb-2"><%= status.humanize %></div>
+                <% @project.tasks.where(status: status).order(:due_date).each do |task| %>
+                  <div class="border rounded p-2 mb-2 bg-light">
+                    <div class="fw-semibold"><%= task.title %></div>
+                    <div class="small text-muted"><%= task.priority.humanize %> priority · due <%= task.due_date.strftime("%b %d") %></div>
+                    <div class="mt-2 d-flex gap-1 flex-wrap">
+                      <% Task.statuses.keys.each do |target_status| %>
+                        <% next if target_status == status %>
+                        <%= button_to target_status.humanize, project_move_task_path(@project, task, status: target_status), method: :patch, class: "btn btn-sm btn-outline-secondary" %>
+                      <% end %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </div>
