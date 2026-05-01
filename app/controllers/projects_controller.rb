@@ -19,6 +19,9 @@ class ProjectsController < ApplicationController
 
     tasks_scope = @project.tasks.includes(:assigned_user)
     @tasks = tasks_scope.search(@task_query).for_status(@task_status).for_priority(@task_priority).order(:due_date)
+
+    @kanban_tasks_by_status = @project.tasks.includes(:assigned_user).order(due_date: :asc).group_by(&:status)
+    @task_counts_by_status = @project.tasks.group(:status).count
   end
 
   def new
@@ -56,7 +59,7 @@ class ProjectsController < ApplicationController
   private
 
   def set_project
-    @project = Project.find(params[:id])
+    @project = accessible_projects_for(current_user).find(params[:id])
   end
 
   def authorize_view_project!
