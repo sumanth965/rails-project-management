@@ -36,9 +36,15 @@ class TasksController < ApplicationController
 
   def move
     if @task.update(status: params[:status])
-      head :ok
+      respond_to do |format|
+        format.html { redirect_back fallback_location: root_path, notice: "Task moved to #{params[:status].humanize}." }
+        format.json { head :ok }
+      end
     else
-      render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
+      respond_to do |format|
+        format.html { redirect_back fallback_location: root_path, alert: "Error moving task." }
+        format.json { render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -1,6 +1,17 @@
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h1 class="mb-3">New Project</h1>
-    <%= render "form" %>
+<div style="max-width:640px;margin:0 auto;">
+  <div class="page-header">
+    <div>
+      <%= link_to projects_path, class: "btn btn-ghost btn-sm", style: "margin-bottom:8px;" do %>
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to Projects
+      <% end %>
+      <h1 class="page-title">New Project</h1>
+    </div>
+  </div>
+
+  <div class="pm-card">
+    <div class="pm-card-body">
+      <%= render "form", project: @project %>
+    </div>
   </div>
 </div>

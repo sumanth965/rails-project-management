@@ -1,48 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title><%= content_for(:title) || "Smart Project Management System" %></title>
+  <title><%= content_for(:title) || "Clariti PM" %></title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta charset="utf-8"/>
-
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
 
   <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
   <%= yield :head %>
 </head>
 
 <body>
-  <% if user_signed_in? %>
-    <header class="topbar">
-      <div class="topbar__content">
-        <div class="brand">💬 Smart Project Management System</div>
-        <nav class="topbar__nav">
-          <%= link_to "Dashboard", root_path, class: "active" %>
-          <%= link_to "Projects", projects_path %>
-          <a href="#">Team</a>
-          <a href="#">Admin Panel</a>
-        </nav>
-        <div class="topbar__right">
-          <span>Hi, <%= current_user.name %></span>
-          <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "logout-btn" %>
+<% if user_signed_in? %>
+
+  <div class="app-shell">
+    <!-- ========= SIDEBAR ========= -->
+    <%= render "shared/sidebar" %>
+
+    <!-- ========= TOP NAVBAR ========= -->
+    <header class="navbar">
+      <div class="navbar__left">
+        <button class="navbar__icon-btn" id="sidebar-toggle" aria-label="Toggle sidebar" style="display:none">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div>
+          <div class="navbar__title"><%= content_for(:page_title) { "Dashboard" } %></div>
+          <div class="navbar__breadcrumb">
+            <span class="material-symbols-outlined" style="font-size:13px">home</span>
+            <span>Clariti PM</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="navbar__right">
+        <button class="navbar__icon-btn" title="Search">
+          <span class="material-symbols-outlined">search</span>
+        </button>
+        <button class="navbar__icon-btn" title="Notifications">
+          <span class="material-symbols-outlined">notifications</span>
+          <span class="navbar__notif-dot"></span>
+        </button>
+        <div class="navbar__divider"></div>
+        <div class="navbar__user-pill">
+          <div class="navbar__user-avatar"><%= current_user.name[0].upcase %></div>
+          <span class="navbar__user-name"><%= current_user.name.split.first %></span>
+          <%= button_to destroy_user_session_path, method: :delete, class: "navbar__logout-btn" do %>
+            <span class="material-symbols-outlined" style="font-size:17px;vertical-align:middle">logout</span>
+          <% end %>
         </div>
       </div>
     </header>
 
-    <main class="app-shell">
+    <!-- ========= MAIN CONTENT ========= -->
+    <main class="main-content">
       <%= render "shared/flash" %>
       <%= yield %>
     </main>
-  <% else %>
-    <main class="auth-shell">
-      <div class="auth-shell__box">
+  </div>
+
+<% else %>
+
+  <!-- Auth layout -->
+  <div class="auth-shell">
+    <main style="width:100%;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px;">
+      <div style="width:100%;max-width:420px;">
         <%= render "shared/flash" %>
         <%= yield %>
       </div>
     </main>
-  <% end %>
+  </div>
+
+<% end %>
+
+<script>
+  // Mobile sidebar toggle
+  const toggle = document.getElementById('sidebar-toggle');
+  const sidebar = document.querySelector('.sidebar');
+  if (toggle) {
+    toggle.addEventListener('click', () => sidebar?.classList.toggle('open'));
+  }
+  // Flash auto-dismiss
+  document.querySelectorAll('.flash__close').forEach(btn => {
+    btn.addEventListener('click', () => btn.closest('.flash')?.remove());
+  });
+</script>
 </body>
 </html>

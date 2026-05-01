@@ -1,92 +1,75 @@
-<div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-  <div class="max-w-2xl">
-    <h1 class="font-headline text-4xl font-extrabold text-on-surface mb-3 tracking-tight">Projects</h1>
-    <p class="text-on-surface-variant text-lg leading-relaxed opacity-80">Track active work, team members, deadlines, and task status with enterprise-grade precision.</p>
-  </div>
+<div class="page-header">
   <div>
-    <%= link_to new_project_path, class: "group flex items-center gap-2 bg-secondary hover:bg-secondary-container text-on-secondary px-8 py-4 rounded-2xl font-bold shadow-xl shadow-secondary/20 transition-all active:scale-95" do %>
-      <span class="material-symbols-outlined transition-transform group-hover:rotate-90">add</span>
-      New Project
-    <% end %>
+    <h1 class="page-title">Projects</h1>
+    <p class="page-subtitle">Manage and track all your active projects.</p>
   </div>
+  <%= link_to new_project_path, class: "btn btn-primary" do %>
+    <span class="material-symbols-outlined">add</span>
+    New Project
+  <% end %>
 </div>
 
-<div class="mb-10">
-  <%= form_with url: projects_path, method: :get, local: true, class: "flex gap-3 max-w-xl" do |form| %>
-    <div class="relative flex-grow">
-      <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40">search</span>
-      <%= form.text_field :q, value: @query, placeholder: "Search projects, descriptions, or codes...", class: "w-full pl-12 pr-4 py-3 bg-surface-container-low border border-outline-variant rounded-2xl text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" %>
+<!-- Search -->
+<div style="margin-bottom:24px;">
+  <%= form_with url: projects_path, method: :get, local: true, style: "display:flex;gap:10px;max-width:480px;" do |form| %>
+    <div style="position:relative;flex:1;">
+      <span class="material-symbols-outlined" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text-muted);">search</span>
+      <%= form.text_field :q, value: @query, placeholder: "Search projects...", class: "form-control", style: "padding-left:40px;" %>
     </div>
-    <%= form.submit "Search", class: "bg-surface-container-highest hover:bg-surface-container-high text-on-surface font-bold px-6 py-3 rounded-2xl border border-outline-variant transition-all cursor-pointer shadow-sm active:scale-95" %>
+    <%= form.submit "Search", class: "btn btn-secondary" %>
   <% end %>
 </div>
 
 <% if @projects.any? %>
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="project-grid">
     <% @projects.each do |project| %>
-      <div class="group relative bg-surface-container-lowest border border-outline-variant p-8 rounded-3xl shadow-sm hover:shadow-2xl hover:shadow-primary/5 transition-all duration-300 flex flex-col glass-card border-b-4 border-b-secondary/10 hover:border-b-secondary">
-        <div class="flex justify-between items-start mb-6">
-          <div>
-            <h3 class="font-headline text-2xl font-bold text-on-surface group-hover:text-secondary transition-colors mb-1">
-              <%= link_to project.name, project_path(project), class: "after:absolute after:inset-0" %>
-            </h3>
-            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-surface-container-high text-on-surface-variant uppercase tracking-wider">
-              <%= project.code %>
+      <div class="project-card">
+        <div class="project-card__code"><%= project.code %></div>
+        <h3 class="project-card__name">
+          <%= link_to project.name, project_path(project), style: "color:inherit;" %>
+        </h3>
+        <p class="project-card__desc"><%= project.description.presence || "No description provided." %></p>
+
+        <div class="project-card__progress">
+          <div class="project-card__progress-label">
+            <span>Progress</span>
+            <span><%= project.progress_percentage %>%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:<%= project.progress_percentage %>%"></div>
+          </div>
+        </div>
+
+        <div class="project-card__footer">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="display:flex;align-items:center;gap:4px;">
+              <span class="material-symbols-outlined" style="font-size:14px;">task_alt</span>
+              <%= pluralize(project.tasks.count, "task") %>
+            </span>
+            <span style="display:flex;align-items:center;gap:4px;">
+              <span class="material-symbols-outlined" style="font-size:14px;">group</span>
+              <%= pluralize(project.members.count, "member") %>
             </span>
           </div>
-          <div class="flex flex-col items-end gap-2">
-            <%= status_badge(project.status) %>
-            <% if project.overdue_tasks.count.positive? %>
-              <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold bg-error-container text-on-error-container">
-                <span class="material-symbols-outlined text-xs">warning</span>
-                <%= project.overdue_tasks.count %> Overdue
+          <div style="display:flex;align-items:center;gap:8px;">
+            <% if project.overdue_tasks.any? %>
+              <span class="badge badge-overdue" style="font-size:10px;">
+                <%= project.overdue_tasks.count %> overdue
               </span>
             <% end %>
+            <%= status_badge(project.status) %>
           </div>
-        </div>
-
-        <p class="text-on-surface-variant text-sm leading-relaxed mb-8 flex-grow opacity-80 line-clamp-2">
-          <%= project.description %>
-        </p>
-
-        <div class="space-y-4 mb-8">
-          <div class="flex items-center justify-between text-sm">
-            <div class="flex items-center gap-2 text-on-surface-variant">
-              <span class="material-symbols-outlined text-sm">person</span>
-              <span><%= project.owner.name %></span>
-            </div>
-            <div class="flex items-center gap-2 text-on-surface-variant">
-              <span class="material-symbols-outlined text-sm text-secondary">calendar_today</span>
-              <span class="font-bold"><%= project.deadline.strftime("%b %d, %Y") %></span>
-            </div>
-          </div>
-
-          <div class="space-y-2">
-            <div class="flex justify-between text-xs font-bold uppercase tracking-widest text-on-surface-variant/60">
-              <span>Progress</span>
-              <span><%= project.progress_percentage %>%</span>
-            </div>
-            <div class="h-2.5 w-full bg-surface-container-high rounded-full overflow-hidden">
-              <div class="h-full bg-gradient-to-r from-secondary to-secondary-container rounded-full transition-all duration-1000" style="width: <%= project.progress_percentage %>%"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-6 border-t border-outline-variant flex justify-between items-center text-xs font-bold uppercase tracking-widest text-on-surface-variant/40">
-          <div class="flex gap-4">
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">task</span> <%= pluralize(project.tasks.count, "task") %></span>
-            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm">group</span> <%= pluralize(project.members.count, "member") %></span>
-          </div>
-          <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
         </div>
       </div>
     <% end %>
   </div>
 <% else %>
-  <div class="bg-surface-container-low border border-dashed border-outline-variant p-16 rounded-3xl text-center">
-    <span class="material-symbols-outlined text-6xl text-on-surface-variant/20 mb-4">folder_off</span>
-    <h3 class="text-xl font-bold text-on-surface mb-2">No projects found</h3>
-    <p class="text-on-surface-variant mb-8">Start by creating your first project to coordinate your team.</p>
-    <%= link_to "Create First Project", new_project_path, class: "inline-flex items-center gap-2 bg-secondary text-on-secondary px-8 py-4 rounded-2xl font-bold shadow-lg shadow-secondary/20 transition-all hover:scale-105 active:scale-95" %>
+  <div class="pm-card">
+    <div class="pm-card-body empty-state">
+      <span class="material-symbols-outlined">folder_off</span>
+      <h3>No projects found</h3>
+      <p>Start by creating your first project to coordinate your team.</p>
+      <%= link_to "Create First Project", new_project_path, class: "btn btn-primary" %>
+    </div>
   </div>
 <% end %>

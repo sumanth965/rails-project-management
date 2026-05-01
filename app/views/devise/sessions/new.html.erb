@@ -1,65 +1,45 @@
-<div class="mb-8 text-center lg:text-left">
-  <h2 class="font-headline text-3xl font-extrabold text-on-surface mb-2">Welcome back</h2>
-  <p class="text-on-surface-variant">Please enter your details to sign in.</p>
+<div style="text-align:center;margin-bottom:32px;">
+  <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;">
+    <div style="width:36px;height:36px;background:linear-gradient(135deg,#4f6ef7,#7c3aed);border-radius:10px;display:grid;place-items:center;">
+      <span class="material-symbols-outlined" style="color:#fff;font-size:20px;font-variation-settings:'FILL' 1">dataset</span>
+    </div>
+    <span style="font-size:20px;font-weight:800;color:var(--text-primary);">Clariti PM</span>
+  </div>
+  <h2 style="font-size:26px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px;">Welcome back</h2>
+  <p style="color:var(--text-secondary);font-size:14px;">Sign in to your workspace</p>
 </div>
 
-<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-2xl shadow-xl glass-card">
-  <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "space-y-6" }) do |f| %>
-    <div>
-      <%= f.label :email, "Work Email", class: "block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2" %>
-      <%= f.email_field :email, autofocus: true, placeholder: "name@company.com", class: "w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" %>
-    </div>
-
-    <div>
-      <div class="flex justify-between items-center mb-2">
-        <%= f.label :password, class: "block text-xs font-bold text-on-surface-variant uppercase tracking-wider" %>
-        <% if devise_mapping.recoverable? %>
-          <%= link_to "Forgot Password?", new_password_path(resource_name), class: "text-xs font-bold text-secondary hover:text-secondary-container transition-colors" %>
-        <% end %>
+<div class="pm-card" style="box-shadow:0 8px 32px rgba(0,0,0,.1);">
+  <div class="pm-card-body">
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="form-group">
+        <%= f.label :email, "Email Address", class: "form-label" %>
+        <%= f.email_field :email, autofocus: true, placeholder: "name@company.com", class: "form-control" %>
       </div>
-      <%= f.password_field :password, autocomplete: "current-password", placeholder: "••••••••", class: "w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl text-body-md focus:ring-2 focus:ring-secondary focus:border-secondary transition-all outline-none" %>
-    </div>
 
-    <% if devise_mapping.rememberable? %>
-      <div class="flex items-center">
-        <%= f.check_box :remember_me, class: "w-4 h-4 text-secondary border-outline-variant rounded focus:ring-secondary" %>
-        <%= f.label :remember_me, class: "ml-2 text-sm text-on-surface-variant font-medium" %>
+      <div class="form-group">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+          <%= f.label :password, "Password", class: "form-label", style: "margin-bottom:0;" %>
+          <% if devise_mapping.recoverable? %>
+            <%= link_to "Forgot password?", new_password_path(resource_name), style: "font-size:12px;color:var(--indigo-700);font-weight:600;" %>
+          <% end %>
+        </div>
+        <%= f.password_field :password, autocomplete: "current-password", placeholder: "••••••••", class: "form-control" %>
       </div>
+
+      <% if devise_mapping.rememberable? %>
+        <div class="form-group" style="display:flex;align-items:center;gap:8px;">
+          <%= f.check_box :remember_me, style: "width:16px;height:16px;accent-color:var(--indigo-700);" %>
+          <%= f.label :remember_me, "Keep me signed in", style: "font-size:13px;font-weight:500;cursor:pointer;margin-bottom:0;" %>
+        </div>
+      <% end %>
+
+      <%= f.submit "Sign In", class: "btn btn-primary btn-lg", style: "width:100%;justify-content:center;margin-top:8px;" %>
     <% end %>
 
-    <%= f.submit "Sign In", class: "w-full bg-secondary hover:bg-secondary-container text-on-secondary py-3 px-6 rounded-xl font-bold shadow-lg shadow-secondary/20 active:scale-[0.98] transition-all flex justify-center items-center gap-2 cursor-pointer" %>
-  <% end %>
-
-  <div class="relative my-8">
-    <div class="absolute inset-0 flex items-center">
-      <div class="w-full border-t border-outline-variant"></div>
-    </div>
-    <div class="relative flex justify-center text-xs">
-      <span class="px-4 bg-surface-container-lowest text-on-surface-variant font-bold uppercase tracking-widest">Or continue with</span>
+    <div style="text-align:center;margin-top:20px;padding-top:20px;border-top:1px solid var(--border);font-size:13px;color:var(--text-secondary);">
+      Don't have an account?
+      <%= link_to "Create one", new_registration_path(resource_name), style: "color:var(--indigo-700);font-weight:700;" %>
     </div>
   </div>
-
-  <div class="grid grid-cols-2 gap-4">
-    <button class="flex items-center justify-center gap-2 px-4 py-3 border border-outline-variant rounded-xl bg-white hover:bg-surface-container transition-all active:scale-[0.98]">
-      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSW3l_z6oOOf2Rm9rUK-Gu0bhUKl1Mf42LU0o3hKL-jbPJ0agggxkJjX41V1VSxi1fy1MepKNwLDe9bNcQ98FKBKjgB9zvJmKn_8fWImNcOeyFmLWhZLVeQ_5EceyH0N2f22Grebd5xXvG3nRe0Ydsq4-v-hIg5NFqv9dR_MnNNHHm33Y1xbQQFxo-VulGbfmfQCqgqGvNP6dlWXhfgQpxCIYen6GyKv8nk28Vx7meZ-jBQtQ7IqywGLBRM9Fkar0DQxs1m5xkiwOY" class="w-5 h-5" alt="Google">
-      <span class="text-sm font-bold text-on-surface">Google</span>
-    </button>
-    <button class="flex items-center justify-center gap-2 px-4 py-3 border border-outline-variant rounded-xl bg-white hover:bg-surface-container transition-all active:scale-[0.98]">
-      <svg class="w-5 h-5" viewBox="0 0 23 23" xmlns="http://www.w3.org/2000/svg">
-        <path d="M0 0h23v23H0z" fill="#f3f3f3"></path>
-        <path d="M1 1h10v10H1z" fill="#f35325"></path>
-        <path d="M12 1h10v10H12z" fill="#81bc06"></path>
-        <path d="M1 12h10v10H1z" fill="#05a6f0"></path>
-        <path d="M12 12h10v10H12z" fill="#ffba08"></path>
-      </svg>
-      <span class="text-sm font-bold text-on-surface">Microsoft</span>
-    </button>
-  </div>
-</div>
-
-<div class="mt-8 text-center">
-  <p class="text-sm text-on-surface-variant font-medium">
-    Don't have an account? 
-    <%= link_to "Sign up for free", new_registration_path(resource_name), class: "text-secondary font-bold hover:underline ml-1" %>
-  </p>
 </div>

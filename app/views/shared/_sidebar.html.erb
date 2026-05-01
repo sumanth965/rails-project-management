@@ -1,0 +1,64 @@
+<aside class="sidebar" id="main-sidebar">
+  <!-- Brand -->
+  <div class="sidebar__brand">
+    <div class="sidebar__brand-icon">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">dataset</span>
+    </div>
+    <div>
+      <div class="sidebar__brand-name">Clariti PM</div>
+      <div class="sidebar__brand-sub">Workspace</div>
+    </div>
+  </div>
+
+  <!-- Main Nav -->
+  <nav class="sidebar__nav">
+    <div class="sidebar__section-label">Main</div>
+
+    <%= link_to root_path, class: "sidebar__link #{current_page?(root_path) ? 'active' : ''}" do %>
+      <span class="material-symbols-outlined">dashboard</span>
+      Dashboard
+    <% end %>
+
+    <%= link_to projects_path, class: "sidebar__link #{request.path.start_with?('/projects') ? 'active' : ''}" do %>
+      <span class="material-symbols-outlined">folder_open</span>
+      Projects
+    <% end %>
+
+    <a href="#" class="sidebar__link">
+      <span class="material-symbols-outlined">task_alt</span>
+      My Tasks
+    </a>
+
+    <a href="#" class="sidebar__link">
+      <span class="material-symbols-outlined">group</span>
+      Team
+    </a>
+
+    <div class="sidebar__section-label">Manage</div>
+
+    <a href="#" class="sidebar__link">
+      <span class="material-symbols-outlined">bar_chart</span>
+      Reports
+    </a>
+
+    <a href="#" class="sidebar__link">
+      <span class="material-symbols-outlined">notifications</span>
+      Notifications
+      <span class="sidebar__link-badge">3</span>
+    </a>
+
+    <%= link_to edit_user_registration_path, class: "sidebar__link #{current_page?(edit_user_registration_path) ? 'active' : ''}" do %>
+      <span class="material-symbols-outlined">settings</span>
+      Settings
+    <% end %>
+  </nav>
+
+  <!-- User section at bottom -->
+  <div class="sidebar__user">
+    <div class="sidebar__avatar"><%= current_user.name[0].upcase %></div>
+    <div style="flex:1;min-width:0;">
+      <div class="sidebar__user-name"><%= current_user.name %></div>
+      <div class="sidebar__user-role"><%= current_user.email %></div>
+    </div>
+  </div>
+</aside>

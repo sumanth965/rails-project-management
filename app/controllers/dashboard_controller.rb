@@ -5,11 +5,31 @@ class DashboardController < ApplicationController
                 .order(deadline: :asc)
                 .limit(6)
 
+    @accessible_project_ids = accessible_projects.select(:id)
+
     @recent_tasks = Task.includes(:project, :assigned_user)
-                        .joins(:project)
-                        .where(projects: { id: accessible_projects.select(:id) })
+                        .where(project_id: @accessible_project_ids)
                         .order(updated_at: :desc)
                         .limit(8)
+
+    @tasks_due_today = Task.where(project_id: @accessible_project_ids)
+                           .where(due_date: Date.today)
+                           .count
+
+    @completed_tasks_count = Task.where(project_id: @accessible_project_ids)
+                                 .where(status: :completed)
+                                 .count
+
+    @team_members_count = User.joins(:project_memberships)
+                              .where(project_memberships: { project_id: @accessible_project_ids })
+                              .distinct
+                              .count
+
+    @kanban_tasks = Task.includes(:project, :assigned_user)
+                        .where(project_id: @accessible_project_ids)
+                        .order(priority: :desc, due_date: :asc)
+                        .limit(20)
+                        .group_by(&:status)
   end
 
   private

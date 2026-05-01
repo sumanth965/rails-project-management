@@ -1,6 +1,30 @@
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h1 class="mb-3">Edit Project</h1>
-    <%= render "form" %>
+<div style="max-width:640px;margin:0 auto;">
+  <div class="page-header">
+    <div>
+      <%= link_to project_path(@project), class: "btn btn-ghost btn-sm", style: "margin-bottom:8px;" do %>
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to Project
+      <% end %>
+      <h1 class="page-title">Edit: <%= @project.name %></h1>
+    </div>
+  </div>
+
+  <div class="pm-card">
+    <div class="pm-card-body">
+      <%= render "form", project: @project %>
+    </div>
+  </div>
+
+  <div class="pm-card" style="margin-top:24px;border-color:#fecaca;">
+    <div class="pm-card-body" style="display:flex;align-items:center;justify-content:space-between;gap:16px;">
+      <div>
+        <div style="font-weight:700;color:var(--red);margin-bottom:2px;">Danger Zone</div>
+        <div style="font-size:13px;color:var(--text-muted);">Permanently delete this project and all associated tasks.</div>
+      </div>
+      <%= button_to project_path(@project), method: :delete, data: { confirm: "Are you sure? This cannot be undone." }, class: "btn btn-danger btn-sm" do %>
+        <span class="material-symbols-outlined">delete</span>
+        Delete Project
+      <% end %>
+    </div>
   </div>
 </div>

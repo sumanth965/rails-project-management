@@ -1,35 +1,98 @@
-<div class="card shadow-sm">
-  <div class="card-body">
-    <div class="d-flex justify-content-between align-items-start mb-4">
-      <div>
-        <h1 class="mb-2"><%= @task.title %></h1>
-        <p class="text-muted mb-0"><%= @task.description.presence || "No additional details." %></p>
-      </div>
-      <div><%= status_badge(@task.status) %></div>
+<div class="page-header">
+  <div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <%= link_to project_path(@project), class: "btn btn-ghost btn-sm" do %>
+        <span class="material-symbols-outlined">arrow_back</span>
+        <%= @project.name %>
+      <% end %>
     </div>
+    <h1 class="page-title"><%= @task.title %></h1>
+    <p class="page-subtitle">Task details &amp; management</p>
+  </div>
+  <div style="display:flex;gap:8px;">
+    <%= link_to edit_project_task_path(@project, @task), class: "btn btn-primary" do %>
+      <span class="material-symbols-outlined">edit</span>
+      Edit Task
+    <% end %>
+    <%= button_to project_task_path(@project, @task), method: :delete, data: { confirm: "Delete this task?" }, class: "btn btn-danger" do %>
+      <span class="material-symbols-outlined">delete</span>
+    <% end %>
+  </div>
+</div>
 
-    <div class="row mb-3">
-      <div class="col-sm-6">
-        <strong>Project</strong>
-        <div><%= link_to @project.name, project_path(@project) %></div>
-      </div>
-      <div class="col-sm-6">
-        <strong>Assigned user</strong>
-        <div><%= @task.assigned_user&.name || "Unassigned" %></div>
+<div style="display:grid;grid-template-columns:1fr 280px;gap:24px;align-items:start;">
+  <!-- Main -->
+  <div class="pm-card">
+    <div class="pm-card-header" style="gap:10px;">
+      <span class="pm-card-title"><%= @task.title %></span>
+      <div style="display:flex;gap:6px;">
+        <%= status_badge(@task.status) %>
+        <%= priority_badge(@task.priority) %>
+        <% if @task.overdue? %>
+          <span class="badge badge-overdue">Overdue</span>
+        <% end %>
       </div>
     </div>
-
-    <div class="row mb-4">
-      <div class="col-sm-6">
-        <strong>Due date</strong>
-        <div><%= @task.due_date.strftime("%B %d, %Y") %></div>
+    <div class="pm-card-body">
+      <p style="color:var(--text-secondary);font-size:14px;line-height:1.8;margin-bottom:24px;">
+        <%= @task.description.presence || "No description provided for this task." %>
+      </p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div>
+          <div class="form-label" style="margin-bottom:4px;">Project</div>
+          <div><%= link_to @project.name, project_path(@project), style: "font-weight:600;color:var(--indigo-700);" %></div>
+        </div>
+        <div>
+          <div class="form-label" style="margin-bottom:4px;">Assigned To</div>
+          <div style="font-weight:600;font-size:14px;"><%= @task.assigned_user&.name || "Unassigned" %></div>
+        </div>
+        <div>
+          <div class="form-label" style="margin-bottom:4px;">Due Date</div>
+          <div style="font-weight:600;font-size:14px;color:<%= @task.overdue? ? 'var(--red)' : 'var(--text-primary)' %>">
+            <span class="material-symbols-outlined" style="font-size:15px;vertical-align:middle;">event</span>
+            <%= @task.due_date.strftime("%B %d, %Y") %>
+          </div>
+        </div>
+        <div>
+          <div class="form-label" style="margin-bottom:4px;">Priority</div>
+          <%= priority_badge(@task.priority) %>
+        </div>
       </div>
     </div>
+  </div>
 
-    <div class="d-flex gap-2">
-      <%= link_to "Edit task", edit_project_task_path(@project, @task), class: "btn btn-primary" %>
-      <%= link_to "Back to project", project_path(@project), class: "btn btn-outline-secondary" %>
-      <%= button_to "Delete task", project_task_path(@project, @task), method: :delete, data: { confirm: "Delete this task?" }, class: "btn btn-danger" %>
+  <!-- Sidebar -->
+  <div style="display:flex;flex-direction:column;gap:16px;">
+    <!-- Move task -->
+    <div class="pm-card">
+      <div class="pm-card-header"><span class="pm-card-title">Move Task</span></div>
+      <div style="padding:12px;display:flex;flex-direction:column;gap:6px;">
+        <% Task.statuses.keys.each do |status| %>
+          <% next if status == @task.status %>
+          <%= button_to project_move_task_path(@project, @task, status: status), method: :patch,
+            class: "btn btn-secondary btn-sm", style: "width:100%;justify-content:center;" do %>
+            → Move to <%= status.humanize %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <!-- Quick info -->
+    <div class="pm-card">
+      <div class="pm-card-header"><span class="pm-card-title">Details</span></div>
+      <div style="padding:14px 18px;display:flex;flex-direction:column;gap:12px;font-size:13px;">
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:var(--text-muted);">Status</span>
+          <%= status_badge(@task.status) %>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:var(--text-muted);">Priority</span>
+          <%= priority_badge(@task.priority) %>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="color:var(--text-muted);">Created</span>
+          <span style="font-weight:600;"><%= @task.created_at.strftime("%b %d") %></span>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,6 +1,16 @@
-<div class="card shadow-sm">
-  <div class="card-body">
-    <h1 class="mb-3">Edit Task</h1>
-    <%= render "form" %>
+<div style="max-width:640px;margin:0 auto;">
+  <div class="page-header">
+    <div>
+      <%= link_to project_path(@project), class: "btn btn-ghost btn-sm", style: "margin-bottom:8px;" do %>
+        <span class="material-symbols-outlined">arrow_back</span>
+        Back to <%= @project.name %>
+      <% end %>
+      <h1 class="page-title">Edit Task</h1>
+    </div>
+  </div>
+  <div class="pm-card">
+    <div class="pm-card-body">
+      <%= render "form" %>
+    </div>
   </div>
 </div>
