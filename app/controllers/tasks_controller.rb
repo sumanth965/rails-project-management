@@ -1,7 +1,11 @@
 class TasksController < ApplicationController
+  include ProjectAccess
+
   before_action :set_project
   before_action :set_task, only: %i[show edit update destroy move]
-  before_action :authorize_project!
+  before_action :authorize_view_project!
+  before_action :authorize_manage_project!, only: %i[new create edit destroy]
+  before_action :authorize_manage_task!, only: %i[update move]
 
   def show; end
 
@@ -13,7 +17,7 @@ class TasksController < ApplicationController
     @task = @project.tasks.build(task_params)
 
     if @task.save
-      redirect_to project_path(@project), notice: "Task created successfully."
+      redirect_to project_path(@project), notice: 'Task created successfully.'
     else
       render :new, status: :unprocessable_entity
     end
@@ -23,7 +27,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to project_path(@project), notice: "Task updated successfully."
+      redirect_to project_path(@project), notice: 'Task updated successfully.'
     else
       render :edit, status: :unprocessable_entity
     end
@@ -31,7 +35,7 @@ class TasksController < ApplicationController
 
   def destroy
     @task.destroy
-    redirect_to project_path(@project), notice: "Task deleted successfully."
+    redirect_to project_path(@project), notice: 'Task deleted successfully.'
   end
 
   def move
@@ -42,7 +46,7 @@ class TasksController < ApplicationController
       end
     else
       respond_to do |format|
-        format.html { redirect_back fallback_location: root_path, alert: "Error moving task." }
+        format.html { redirect_back fallback_location: root_path, alert: 'Error moving task.' }
         format.json { render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity }
       end
     end
@@ -58,12 +62,22 @@ class TasksController < ApplicationController
     @task = @project.tasks.find(params[:id])
   end
 
-  def authorize_project!
-    return if admin?
-    return if @project.owner == current_user
-    return if @project.members.exists?(current_user.id)
+  def authorize_view_project!
+    return if can_view_project?(current_user, @project)
 
-    redirect_to projects_path, alert: "You are not authorized to access that task."
+    redirect_to projects_path, alert: 'You are not authorized to access that task.'
+  end
+
+  def authorize_manage_project!
+    return if can_manage_project?(current_user, @project)
+
+    redirect_to project_path(@project), alert: 'You do not have permission for task management.'
+  end
+
+  def authorize_manage_task!
+    return if can_manage_task?(current_user, @task)
+
+    redirect_to project_path(@project), alert: 'You do not have permission to modify this task.'
   end
 
   def task_params

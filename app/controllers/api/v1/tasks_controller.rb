@@ -4,50 +4,59 @@ module Api
       before_action :set_task, only: %i[show update destroy]
 
       def index
-        tasks = Task.includes(:project, :assigned_user).order(due_date: :asc)
-        render json: tasks.as_json(include: {
+        page, per_page = pagination_params
+        scope = Task.includes(:project, :assigned_user)
+                    .where(project_id: accessible_projects_for(current_api_user).select(:id))
+                    .order(due_date: :asc)
+        tasks = scope.offset((page - 1) * per_page).limit(per_page)
+        render_data(tasks.as_json(include: {
           project: { only: %i[id name] },
           assigned_user: { only: %i[id name email] }
-        })
+        }))
       end
 
       def show
-        render json: @task.as_json(include: {
+        return render_error(['Forbidden'], :forbidden) unless can_view_project?(current_api_user, @task.project)
+        render_data(@task.as_json(include: {
           project: { only: %i[id name] },
           assigned_user: { only: %i[id name email] }
-        })
+        }))
       end
 
       def create
         task = Task.new(task_params)
+        return render_error(['Forbidden'], :forbidden) unless can_manage_project?(current_api_user, task.project)
         if task.save
-          render json: task, status: :created
+          render_data(task, status: :created)
         else
-          render json: { errors: task.errors.full_messages }, status: :unprocessable_entity
+          render_error(task.errors.full_messages, :unprocessable_entity)
         end
       end
 
       def update
+        return render_error(['Forbidden'], :forbidden) unless can_manage_task?(current_api_user, @task)
         if @task.update(task_params)
-          render json: @task
+          render_data(@task)
         else
-          render json: { errors: @task.errors.full_messages }, status: :unprocessable_entity
+          render_error(@task.errors.full_messages, :unprocessable_entity)
         end
       end
 
       def destroy
+        return render_error(['Forbidden'], :forbidden) unless can_manage_project?(current_api_user, @task.project)
         @task.destroy
-        render json: { message: "Task deleted" }
+        render_data({ message: 'Task deleted' })
       end
 
       private
 
       def set_task
-        @task = Task.find(params[:id])
+        @task = Task.find_by(id: params[:id])
+        render_error(['Not found'], :not_found) unless @task
       end
 
       def task_params
-        params.require(:task).permit(:title, :description, :due_date, :status, :project_id, :assigned_user_id)
+        params.require(:task).permit(:title, :description, :due_date, :status, :priority, :project_id, :assigned_user_id)
       end
     end
   end

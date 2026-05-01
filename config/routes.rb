@@ -5,6 +5,9 @@ Rails.application.routes.draw do
 
   get "dashboard", to: "dashboard#show"
 
+  get "api_token", to: "api_tokens#show"
+  post "api_token/regenerate", to: "api_tokens#regenerate"
+
   resources :projects do
     resources :tasks, except: %i[index]
     patch "tasks/:id/move", to: "tasks#move", as: :move_task
