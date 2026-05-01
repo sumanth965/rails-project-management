@@ -7,7 +7,7 @@ body {
   color: #dce3ed;
   background-color: #020b16;
   background-image: radial-gradient(circle at top left, rgba(0, 255, 138, 0.06), transparent 35%),
-                    radial-gradient(circle at bottom right, rgba(57, 255, 20, 0.04), transparent 28%);
+    radial-gradient(circle at bottom right, rgba(57, 255, 20, 0.04), transparent 28%);
 }
 
 main.container {
@@ -222,6 +222,7 @@ body::before {
 }
 
 @media (max-width: 768px) {
+
   .navbar,
   .card,
   .alert,

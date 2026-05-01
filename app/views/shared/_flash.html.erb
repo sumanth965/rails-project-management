@@ -1,6 +1,20 @@
-<%= flash.map do |type, message| %>
-  <div class="alert alert-<%= bootstrap_flash_class(type) %> alert-dismissible fade show" role="alert">
-    <%= message %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<% flash.each do |type, message| %>
+  <%
+    bg_color = case type.to_s
+               when "notice", "success" then "bg-secondary-container text-on-secondary-container border-secondary"
+               when "alert", "error" then "bg-error-container text-on-error-container border-error"
+               else "bg-surface-container-high text-on-surface border-outline"
+               end
+  %>
+  <div class="<%= bg_color %> border-l-4 p-4 rounded-xl mb-6 shadow-sm flex justify-between items-center animate-in fade-in slide-in-from-top duration-300" role="alert">
+    <div class="flex items-center gap-3">
+      <span class="material-symbols-outlined">
+        <%= type.to_s == 'alert' || type.to_s == 'error' ? 'error' : 'check_circle' %>
+      </span>
+      <span class="font-medium"><%= message %></span>
+    </div>
+    <button type="button" class="text-current opacity-50 hover:opacity-100 transition-opacity" onclick="this.parentElement.remove()">
+      <span class="material-symbols-outlined">close</span>
+    </button>
   </div>
-<% end.join.html_safe %>
+<% end %>

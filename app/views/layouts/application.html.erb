@@ -1,392 +1,189 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title><%= content_for(:title) || "Project Manager" %></title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="Project Manager">
-    <meta name="mobile-web-app-capable" content="yes">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+<html class="light" lang="en">
+<head>
+  <title><%= content_for(:title) || "Clariti PM" %></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="utf-8"/>
+  
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-    <%= yield :head %>
+  <!-- Premium Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#bec6e0",
+            "tertiary-fixed": "#89f5e7",
+            "on-tertiary-container": "#0c9488",
+            "tertiary": "#000000",
+            "on-error": "#ffffff",
+            "error-container": "#ffdad6",
+            "surface": "#f8f9ff",
+            "surface-container-highest": "#d3e4fe",
+            "surface-dim": "#cbdbf5",
+            "on-primary": "#ffffff",
+            "on-surface": "#0b1c30",
+            "tertiary-container": "#00201d",
+            "background": "#f8f9ff",
+            "on-surface-variant": "#45464d",
+            "surface-container-high": "#dce9ff",
+            "inverse-primary": "#bec6e0",
+            "tertiary-fixed-dim": "#6bd8cb",
+            "inverse-surface": "#213145",
+            "on-secondary-fixed": "#0f0069",
+            "surface-container-lowest": "#ffffff",
+            "surface-bright": "#f8f9ff",
+            "primary": "#000000",
+            "surface-container": "#e5eeff",
+            "secondary-container": "#645efb",
+            "secondary": "#4b41e1",
+            "on-secondary-container": "#fffbff",
+            "surface-tint": "#565e74",
+            "on-primary-fixed-variant": "#3f465c",
+            "secondary-fixed-dim": "#c3c0ff",
+            "on-background": "#0b1c30",
+            "primary-fixed": "#dae2fd",
+            "on-tertiary-fixed-variant": "#005049",
+            "on-secondary": "#ffffff",
+            "outline": "#76777d",
+            "secondary-fixed": "#e2dfff",
+            "on-tertiary-fixed": "#00201d",
+            "on-primary-container": "#7c839b",
+            "primary-container": "#131b2e",
+            "inverse-on-surface": "#eaf1ff",
+            "error": "#ba1a1a",
+            "surface-variant": "#d3e4fe",
+            "surface-container-low": "#eff4ff",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed-variant": "#3323cc",
+            "on-primary-fixed": "#131b2e",
+            "outline-variant": "#c6c6cd",
+            "on-tertiary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "sans": ["Manrope", "sans-serif"],
+            "headline": ["Manrope", "sans-serif"]
+          }
+        },
+      },
+    }
+  </script>
 
-    <style>
-      :root {
-        --bg-base:       #0b0d11;
-        --bg-surface:    #11141a;
-        --bg-elevated:   #181c24;
-        --border:        rgba(255,255,255,0.07);
-        --border-bright: rgba(255,255,255,0.13);
-        --accent:        #4f8cff;
-        --accent-glow:   rgba(79,140,255,0.18);
-        --accent-soft:   rgba(79,140,255,0.10);
-        --danger:        #ff4f6a;
-        --text-primary:  #eef0f6;
-        --text-secondary:#7a8399;
-        --text-muted:    #454e66;
-        --font-display:  'Syne', sans-serif;
-        --font-body:     'DM Sans', sans-serif;
-        --nav-h:         64px;
-        --radius:        12px;
-        --radius-sm:     8px;
-        --transition:    0.2s cubic-bezier(0.4,0,0.2,1);
-      }
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    /* Simple reset for standard Rails bits */
+    body { font-family: 'Manrope', sans-serif; }
+  </style>
 
-      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+  <%= yield :head %>
+</head>
 
-      html { scroll-behavior: smooth; }
-
-      body {
-        font-family: var(--font-body);
-        background: var(--bg-base);
-        color: var(--text-primary);
-        min-height: 100vh;
-        -webkit-font-smoothing: antialiased;
-      }
-
-      /* ── Subtle grid texture ── */
-      body::before {
-        content: '';
-        position: fixed;
-        inset: 0;
-        background-image:
-          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-        background-size: 48px 48px;
-        pointer-events: none;
-        z-index: 0;
-      }
-
-      /* ── NAV ── */
-      .pm-nav {
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        height: var(--nav-h);
-        background: rgba(11,13,17,0.82);
-        backdrop-filter: blur(18px) saturate(1.4);
-        -webkit-backdrop-filter: blur(18px) saturate(1.4);
-        border-bottom: 1px solid var(--border);
-      }
-
-      .pm-nav::after {
-        content: '';
-        position: absolute;
-        bottom: 0; left: 0; right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, var(--accent), transparent);
-        opacity: 0.4;
-      }
-
-      .pm-nav .container {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        gap: 0;
-      }
-
-      /* Brand */
-      .pm-brand {
-        font-family: var(--font-display);
-        font-weight: 800;
-        font-size: 1.15rem;
-        letter-spacing: -0.02em;
-        color: var(--text-primary) !important;
-        text-decoration: none;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        flex-shrink: 0;
-      }
-
-      .pm-brand-icon {
-        width: 32px; height: 32px;
-        background: linear-gradient(135deg, var(--accent), #7b5fff);
-        border-radius: 8px;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 14px;
-        box-shadow: 0 0 18px var(--accent-glow);
-        flex-shrink: 0;
-      }
-
-      /* Nav links */
-      .pm-nav-links {
-        display: flex;
-        align-items: center;
-        gap: 2px;
-        margin-left: 36px;
-        list-style: none;
-      }
-
-      .pm-nav-link {
-        font-family: var(--font-body);
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: var(--text-secondary) !important;
-        text-decoration: none;
-        padding: 6px 14px;
-        border-radius: var(--radius-sm);
-        transition: color var(--transition), background var(--transition);
-        letter-spacing: 0.01em;
-      }
-
-      .pm-nav-link:hover {
-        color: var(--text-primary) !important;
-        background: rgba(255,255,255,0.06);
-      }
-
-      /* Right side */
-      .pm-nav-right {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        margin-left: auto;
-        list-style: none;
-      }
-
-      .pm-user-badge {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        padding: 5px 14px 5px 6px;
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: 999px;
-        font-size: 0.8rem;
-        color: var(--text-secondary);
-        letter-spacing: 0.01em;
-      }
-
-      .pm-user-avatar {
-        width: 26px; height: 26px;
-        background: linear-gradient(135deg, var(--accent), #7b5fff);
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 11px;
-        font-weight: 700;
-        color: #fff;
-        font-family: var(--font-display);
-        flex-shrink: 0;
-      }
-
-      .pm-user-name { font-weight: 500; color: var(--text-primary); }
-
-      .pm-btn-ghost {
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--text-secondary) !important;
-        text-decoration: none;
-        padding: 6px 13px;
-        border-radius: var(--radius-sm);
-        transition: color var(--transition), background var(--transition);
-        white-space: nowrap;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-family: var(--font-body);
-        letter-spacing: 0.01em;
-      }
-
-      .pm-btn-ghost:hover {
-        color: var(--text-primary) !important;
-        background: rgba(255,255,255,0.06);
-      }
-
-      .pm-btn-logout {
-        font-size: 0.8rem;
-        font-weight: 500;
-        color: var(--danger) !important;
-        background: rgba(255,79,106,0.08);
-        border: 1px solid rgba(255,79,106,0.18);
-        border-radius: var(--radius-sm);
-        padding: 6px 13px;
-        cursor: pointer;
-        font-family: var(--font-body);
-        text-decoration: none;
-        transition: background var(--transition), border-color var(--transition);
-        white-space: nowrap;
-      }
-
-      .pm-btn-logout:hover {
-        background: rgba(255,79,106,0.16);
-        border-color: rgba(255,79,106,0.35);
-        color: var(--danger) !important;
-      }
-
-      .pm-btn-primary {
-        font-size: 0.8rem;
-        font-weight: 600;
-        color: #fff !important;
-        background: linear-gradient(135deg, var(--accent), #5d6fff);
-        border: none;
-        border-radius: var(--radius-sm);
-        padding: 6px 15px;
-        cursor: pointer;
-        font-family: var(--font-body);
-        text-decoration: none;
-        transition: opacity var(--transition), box-shadow var(--transition);
-        white-space: nowrap;
-        box-shadow: 0 0 16px var(--accent-glow);
-        letter-spacing: 0.01em;
-      }
-
-      .pm-btn-primary:hover {
-        opacity: 0.88;
-        color: #fff !important;
-        box-shadow: 0 0 24px var(--accent-glow);
-      }
-
-      /* Toggler */
-      .pm-toggler {
-        display: none;
-        align-items: center;
-        justify-content: center;
-        width: 36px; height: 36px;
-        background: var(--bg-elevated);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        cursor: pointer;
-        margin-left: auto;
-        flex-direction: column;
-        gap: 5px;
-        padding: 0;
-        transition: background var(--transition);
-      }
-
-      .pm-toggler span {
-        display: block;
-        width: 18px; height: 1.5px;
-        background: var(--text-secondary);
-        border-radius: 2px;
-        transition: background var(--transition);
-      }
-
-      .pm-toggler:hover { background: var(--bg-elevated); }
-      .pm-toggler:hover span { background: var(--text-primary); }
-
-      /* ── MAIN ── */
-      main.pm-main {
-        position: relative;
-        z-index: 1;
-        padding: 48px 0 80px;
-        min-height: calc(100vh - var(--nav-h));
-      }
-
-      /* ── FLASH OVERRIDE ── */
-      .alert {
-        background: var(--bg-elevated);
-        border: 1px solid var(--border-bright);
-        border-radius: var(--radius);
-        color: var(--text-primary);
-        font-size: 0.875rem;
-        padding: 14px 20px;
-        margin-bottom: 24px;
-      }
-
-      .alert-success { border-color: rgba(52,199,89,0.35); background: rgba(52,199,89,0.07); color: #5ee87a; }
-      .alert-danger  { border-color: rgba(255,79,106,0.35); background: rgba(255,79,106,0.07); color: #ff7090; }
-      .alert-warning { border-color: rgba(255,185,0,0.35);  background: rgba(255,185,0,0.07);  color: #ffcc44; }
-      .alert-info    { border-color: rgba(79,140,255,0.35); background: rgba(79,140,255,0.07); color: #80b0ff; }
-
-      /* ── MOBILE ── */
-      @media (max-width: 991px) {
-        .pm-toggler { display: flex; }
-
-        .pm-nav-collapse {
-          display: none;
-          position: absolute;
-          top: var(--nav-h);
-          left: 0; right: 0;
-          background: rgba(11,13,17,0.97);
-          backdrop-filter: blur(18px);
-          border-bottom: 1px solid var(--border);
-          padding: 16px 20px 24px;
-          flex-direction: column;
-          gap: 12px;
-        }
-
-        .pm-nav-collapse.open { display: flex; }
-
-        .pm-nav-links {
-          flex-direction: column;
-          align-items: flex-start;
-          margin-left: 0;
-          gap: 2px;
-          width: 100%;
-        }
-
-        .pm-nav-right {
-          margin-left: 0;
-          flex-wrap: wrap;
-          gap: 8px;
-          width: 100%;
-          border-top: 1px solid var(--border);
-          padding-top: 14px;
-        }
-
-        .pm-user-badge { flex: 1 1 auto; }
-
-        .pm-nav .container { flex-wrap: wrap; position: relative; }
-      }
-    </style>
-  </head>
-
-  <body>
-    <nav class="pm-nav">
-      <div class="container">
-        <a class="pm-brand" href="<%= root_path %>">
-          <span class="pm-brand-icon">⬡</span>
-          Project Manager
-        </a>
-
-        <button class="pm-toggler" id="pm-toggler" aria-label="Toggle navigation" type="button">
-          <span></span><span></span><span></span>
-        </button>
-
-        <div class="pm-nav-collapse" id="pm-nav-collapse">
-          <ul class="pm-nav-links">
-            <li><%= link_to "Projects", projects_path, class: "pm-nav-link" %></li>
-          </ul>
-
-          <ul class="pm-nav-right">
-            <% if user_signed_in? %>
-              <li>
-                <span class="pm-user-badge">
-                  <span class="pm-user-avatar"><%= current_user.name.first.upcase %></span>
-                  <span class="pm-user-name"><%= current_user.name %></span>
-                </span>
-              </li>
-              <li><%= link_to "Account", edit_user_registration_path, class: "pm-btn-ghost" %></li>
-              <li>
-                <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "pm-btn-logout" %>
-              </li>
-            <% else %>
-              <li><%= link_to "Sign in", new_user_session_path, class: "pm-btn-ghost" %></li>
-              <li><%= link_to "Register", new_user_registration_path, class: "pm-btn-primary" %></li>
-            <% end %>
-          </ul>
+<body class="bg-surface text-on-surface antialiased min-h-screen">
+  <% if user_signed_in? %>
+    <!-- Authenticated Layout -->
+    <nav class="bg-primary-container border-b border-outline-variant sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16 items-center">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-on-primary rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">dataset</span>
+            </div>
+            <a href="<%= root_path %>" class="text-on-primary font-bold text-lg">Clariti PM</a>
+            <div class="hidden md:flex ml-10 space-x-4">
+              <%= link_to "Projects", projects_path, class: "text-on-primary-container/80 hover:text-on-primary px-3 py-2 rounded-md text-sm font-medium transition-colors" %>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-4">
+            <div class="hidden sm:block text-right">
+              <p class="text-xs text-on-primary-container/60">Signed in as</p>
+              <p class="text-sm font-semibold text-on-primary"><%= current_user.name %></p>
+            </div>
+            <div class="flex items-center gap-2">
+              <%= link_to edit_user_registration_path, class: "p-2 text-on-primary-container/80 hover:text-on-primary hover:bg-white/10 rounded-full transition-all" do %>
+                <span class="material-symbols-outlined">settings</span>
+              <% end %>
+              <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-2 bg-error hover:bg-error/90 text-on-error px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-md active:scale-95" do %>
+                <span class="material-symbols-outlined text-sm">logout</span>
+                Logout
+              <% end %>
+            </div>
+          </div>
         </div>
       </div>
     </nav>
 
-    <main class="pm-main">
-      <div class="container">
-        <%= render "shared/flash" %>
-        <%= yield %>
-      </div>
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <%= render "shared/flash" %>
+      <%= yield %>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      const toggler = document.getElementById('pm-toggler');
-      const collapse = document.getElementById('pm-nav-collapse');
-      toggler?.addEventListener('click', () => collapse?.classList.toggle('open'));
-    </script>
-  </body>
+  <% else %>
+    <!-- Transactional (Login/Signup) Layout -->
+    <main class="flex min-h-screen">
+      <!-- Left Side: Brand Narrative & Visual -->
+      <section class="hidden lg:flex lg:w-1/2 relative bg-primary-container items-center justify-center p-12 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-primary-container via-primary-container to-secondary opacity-40"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-secondary-container rounded-full blur-[120px] opacity-20"></div>
+        <div class="relative z-10 max-w-lg">
+          <div class="flex items-center gap-2 mb-12">
+            <div class="w-10 h-10 bg-on-primary rounded-lg flex items-center justify-center">
+              <span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">dataset</span>
+            </div>
+            <span class="text-on-primary font-bold text-2xl tracking-tight">Clariti PM</span>
+          </div>
+          <h1 class="text-on-primary text-4xl lg:text-5xl font-extrabold mb-6 leading-tight">
+            Accelerate your team's velocity
+          </h1>
+          <p class="text-on-primary-container text-lg lg:text-xl mb-12 opacity-90 leading-relaxed">
+            The enterprise-grade platform for high-performance project management. Coordinate complex workflows with executive clarity.
+          </p>
+          <div class="relative rounded-2xl overflow-hidden border border-on-primary-fixed-variant shadow-2xl">
+            <img class="w-full h-auto object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVU7ZZhNKLuASwxZ2e0tEp3w0XPFLsvK_w_QwfKizCvbqcEUWdIf0MT0TDT-J68M1wXoBfqfZkBoSx-hyDXy7yWczGDIG9W3pWUXYMxgEa67TqZBsqOQTizJgXSWHAO1SdvsY3RP4zcE1ZdvpP4wJaNES1v_RhUbjxoNH1LBcR82WTnB87aI-SN55nGPj2L_1k72jnI2J0GpUeNmWKiqjXo_ZdJW58R0rCz13dtfohoQ3w0lX2uPAJY2XpcoXVK0io91ZKVB_rF61E" alt="Dashboard Mockup"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary-container/40 to-transparent"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Side: Content (Forms) -->
+      <section class="w-full lg:w-1/2 flex items-center justify-center p-8 bg-surface">
+        <div class="w-full max-w-md">
+          <%= render "shared/flash" %>
+          <%= yield %>
+        </div>
+      </section>
+    </main>
+
+    <footer class="fixed bottom-0 w-full py-4 px-8 bg-transparent pointer-events-none">
+      <div class="max-w-7xl mx-auto flex justify-center lg:justify-end">
+        <span class="text-on-surface-variant/40 text-xs pointer-events-auto">
+          © 2024 Clariti Project Management. All rights reserved.
+        </span>
+      </div>
+    </footer>
+  <% end %>
+</body>
 </html>
