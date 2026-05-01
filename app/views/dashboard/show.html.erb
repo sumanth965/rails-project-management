@@ -1,3 +1,5 @@
+<% content_for :page_title, "Dashboard" %>
+
 <!-- Page Header -->
 <div class="page-header">
   <div>
@@ -103,7 +105,7 @@
                 <div class="dashboard-task-card" style="border-left-color: #3b82f6;">
                   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                     <%= link_to task.title, project_task_path(task.project, task), style: "font-size: 13px; font-weight: 700; color: inherit; flex: 1;" %>
-                    <%= button_to project_move_task_path(task.project, task, status: 'completed'), method: :patch, class: "btn btn-ghost btn-sm", style: "padding: 2px; height: auto;", title: "Finish Task" do %>
+                    <%= button_to project_move_task_path(task.project, task, status: 'done'), method: :patch, class: "btn btn-ghost btn-sm", style: "padding: 2px; height: auto;", title: "Finish Task" do %>
                       <span class="material-symbols-outlined" style="font-size: 16px; color: #10b981;">check</span>
                     <% end %>
                   </div>
@@ -127,7 +129,7 @@
               Done <span style="background: #22c55e; width: 16px; height: 10px; display: inline-block; clip-path: polygon(0% 0%, 100% 0%, 80% 50%, 100% 100%, 0% 100%);"></span>
             </div>
             <div style="background: #e2e8f0; border-radius: 0 0 6px 6px; padding: 12px; min-height: 200px;">
-              <% (@kanban_tasks['completed'] || []).each do |task| %>
+              <% (@kanban_tasks['done'] || []).each do |task| %>
                 <div class="dashboard-task-card" style="border-left-color: #22c55e; opacity: 0.8;">
                   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
                     <%= link_to task.title, project_task_path(task.project, task), style: "font-size: 13px; font-weight: 700; color: inherit; flex: 1; text-decoration: line-through; opacity: 0.6;" %>
@@ -141,7 +143,7 @@
                   </div>
                 </div>
               <% end %>
-              <% if (@kanban_tasks['completed'] || []).empty? %>
+              <% if (@kanban_tasks['done'] || []).empty? %>
                 <div style="text-align: center; color: var(--text-muted); font-size: 11px; padding-top: 20px;">No tasks</div>
               <% end %>
             </div>
