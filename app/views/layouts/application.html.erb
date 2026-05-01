@@ -9,43 +9,384 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
-
     <%= yield :head %>
+
+    <style>
+      :root {
+        --bg-base:       #0b0d11;
+        --bg-surface:    #11141a;
+        --bg-elevated:   #181c24;
+        --border:        rgba(255,255,255,0.07);
+        --border-bright: rgba(255,255,255,0.13);
+        --accent:        #4f8cff;
+        --accent-glow:   rgba(79,140,255,0.18);
+        --accent-soft:   rgba(79,140,255,0.10);
+        --danger:        #ff4f6a;
+        --text-primary:  #eef0f6;
+        --text-secondary:#7a8399;
+        --text-muted:    #454e66;
+        --font-display:  'Syne', sans-serif;
+        --font-body:     'DM Sans', sans-serif;
+        --nav-h:         64px;
+        --radius:        12px;
+        --radius-sm:     8px;
+        --transition:    0.2s cubic-bezier(0.4,0,0.2,1);
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg-base);
+        color: var(--text-primary);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* ── Subtle grid texture ── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+        background-size: 48px 48px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── NAV ── */
+      .pm-nav {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: var(--nav-h);
+        background: rgba(11,13,17,0.82);
+        backdrop-filter: blur(18px) saturate(1.4);
+        -webkit-backdrop-filter: blur(18px) saturate(1.4);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .pm-nav::after {
+        content: '';
+        position: absolute;
+        bottom: 0; left: 0; right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        opacity: 0.4;
+      }
+
+      .pm-nav .container {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        gap: 0;
+      }
+
+      /* Brand */
+      .pm-brand {
+        font-family: var(--font-display);
+        font-weight: 800;
+        font-size: 1.15rem;
+        letter-spacing: -0.02em;
+        color: var(--text-primary) !important;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-shrink: 0;
+      }
+
+      .pm-brand-icon {
+        width: 32px; height: 32px;
+        background: linear-gradient(135deg, var(--accent), #7b5fff);
+        border-radius: 8px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px;
+        box-shadow: 0 0 18px var(--accent-glow);
+        flex-shrink: 0;
+      }
+
+      /* Nav links */
+      .pm-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 2px;
+        margin-left: 36px;
+        list-style: none;
+      }
+
+      .pm-nav-link {
+        font-family: var(--font-body);
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: var(--text-secondary) !important;
+        text-decoration: none;
+        padding: 6px 14px;
+        border-radius: var(--radius-sm);
+        transition: color var(--transition), background var(--transition);
+        letter-spacing: 0.01em;
+      }
+
+      .pm-nav-link:hover {
+        color: var(--text-primary) !important;
+        background: rgba(255,255,255,0.06);
+      }
+
+      /* Right side */
+      .pm-nav-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-left: auto;
+        list-style: none;
+      }
+
+      .pm-user-badge {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 5px 14px 5px 6px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        letter-spacing: 0.01em;
+      }
+
+      .pm-user-avatar {
+        width: 26px; height: 26px;
+        background: linear-gradient(135deg, var(--accent), #7b5fff);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: #fff;
+        font-family: var(--font-display);
+        flex-shrink: 0;
+      }
+
+      .pm-user-name { font-weight: 500; color: var(--text-primary); }
+
+      .pm-btn-ghost {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--text-secondary) !important;
+        text-decoration: none;
+        padding: 6px 13px;
+        border-radius: var(--radius-sm);
+        transition: color var(--transition), background var(--transition);
+        white-space: nowrap;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-family: var(--font-body);
+        letter-spacing: 0.01em;
+      }
+
+      .pm-btn-ghost:hover {
+        color: var(--text-primary) !important;
+        background: rgba(255,255,255,0.06);
+      }
+
+      .pm-btn-logout {
+        font-size: 0.8rem;
+        font-weight: 500;
+        color: var(--danger) !important;
+        background: rgba(255,79,106,0.08);
+        border: 1px solid rgba(255,79,106,0.18);
+        border-radius: var(--radius-sm);
+        padding: 6px 13px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        text-decoration: none;
+        transition: background var(--transition), border-color var(--transition);
+        white-space: nowrap;
+      }
+
+      .pm-btn-logout:hover {
+        background: rgba(255,79,106,0.16);
+        border-color: rgba(255,79,106,0.35);
+        color: var(--danger) !important;
+      }
+
+      .pm-btn-primary {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #fff !important;
+        background: linear-gradient(135deg, var(--accent), #5d6fff);
+        border: none;
+        border-radius: var(--radius-sm);
+        padding: 6px 15px;
+        cursor: pointer;
+        font-family: var(--font-body);
+        text-decoration: none;
+        transition: opacity var(--transition), box-shadow var(--transition);
+        white-space: nowrap;
+        box-shadow: 0 0 16px var(--accent-glow);
+        letter-spacing: 0.01em;
+      }
+
+      .pm-btn-primary:hover {
+        opacity: 0.88;
+        color: #fff !important;
+        box-shadow: 0 0 24px var(--accent-glow);
+      }
+
+      /* Toggler */
+      .pm-toggler {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        width: 36px; height: 36px;
+        background: var(--bg-elevated);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-sm);
+        cursor: pointer;
+        margin-left: auto;
+        flex-direction: column;
+        gap: 5px;
+        padding: 0;
+        transition: background var(--transition);
+      }
+
+      .pm-toggler span {
+        display: block;
+        width: 18px; height: 1.5px;
+        background: var(--text-secondary);
+        border-radius: 2px;
+        transition: background var(--transition);
+      }
+
+      .pm-toggler:hover { background: var(--bg-elevated); }
+      .pm-toggler:hover span { background: var(--text-primary); }
+
+      /* ── MAIN ── */
+      main.pm-main {
+        position: relative;
+        z-index: 1;
+        padding: 48px 0 80px;
+        min-height: calc(100vh - var(--nav-h));
+      }
+
+      /* ── FLASH OVERRIDE ── */
+      .alert {
+        background: var(--bg-elevated);
+        border: 1px solid var(--border-bright);
+        border-radius: var(--radius);
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        padding: 14px 20px;
+        margin-bottom: 24px;
+      }
+
+      .alert-success { border-color: rgba(52,199,89,0.35); background: rgba(52,199,89,0.07); color: #5ee87a; }
+      .alert-danger  { border-color: rgba(255,79,106,0.35); background: rgba(255,79,106,0.07); color: #ff7090; }
+      .alert-warning { border-color: rgba(255,185,0,0.35);  background: rgba(255,185,0,0.07);  color: #ffcc44; }
+      .alert-info    { border-color: rgba(79,140,255,0.35); background: rgba(79,140,255,0.07); color: #80b0ff; }
+
+      /* ── MOBILE ── */
+      @media (max-width: 991px) {
+        .pm-toggler { display: flex; }
+
+        .pm-nav-collapse {
+          display: none;
+          position: absolute;
+          top: var(--nav-h);
+          left: 0; right: 0;
+          background: rgba(11,13,17,0.97);
+          backdrop-filter: blur(18px);
+          border-bottom: 1px solid var(--border);
+          padding: 16px 20px 24px;
+          flex-direction: column;
+          gap: 12px;
+        }
+
+        .pm-nav-collapse.open { display: flex; }
+
+        .pm-nav-links {
+          flex-direction: column;
+          align-items: flex-start;
+          margin-left: 0;
+          gap: 2px;
+          width: 100%;
+        }
+
+        .pm-nav-right {
+          margin-left: 0;
+          flex-wrap: wrap;
+          gap: 8px;
+          width: 100%;
+          border-top: 1px solid var(--border);
+          padding-top: 14px;
+        }
+
+        .pm-user-badge { flex: 1 1 auto; }
+
+        .pm-nav .container { flex-wrap: wrap; position: relative; }
+      }
+    </style>
   </head>
 
-  <body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <body>
+    <nav class="pm-nav">
       <div class="container">
-        <a class="navbar-brand" href="<%= root_path %>">Project Manager</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+        <a class="pm-brand" href="<%= root_path %>">
+          <span class="pm-brand-icon">⬡</span>
+          Project Manager
+        </a>
+
+        <button class="pm-toggler" id="pm-toggler" aria-label="Toggle navigation" type="button">
+          <span></span><span></span><span></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMain">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item"><%= link_to "Projects", projects_path, class: "nav-link" %></li>
+        <div class="pm-nav-collapse" id="pm-nav-collapse">
+          <ul class="pm-nav-links">
+            <li><%= link_to "Projects", projects_path, class: "pm-nav-link" %></li>
           </ul>
 
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center gap-2">
+          <ul class="pm-nav-right">
             <% if user_signed_in? %>
-              <li class="nav-item"><span class="nav-link">Signed in as <strong><%= current_user.name %></strong></span></li>
-              <li class="nav-item"><%= link_to "Account", edit_user_registration_path, class: "nav-link" %></li>
+              <li>
+                <span class="pm-user-badge">
+                  <span class="pm-user-avatar"><%= current_user.name.first.upcase %></span>
+                  <span class="pm-user-name"><%= current_user.name %></span>
+                </span>
+              </li>
+              <li><%= link_to "Account", edit_user_registration_path, class: "pm-btn-ghost" %></li>
+              <li>
+                <%= button_to "Logout", destroy_user_session_path, method: :delete, class: "pm-btn-logout" %>
+              </li>
             <% else %>
-              <li class="nav-item"><%= link_to "Sign in", new_user_session_path, class: "nav-link" %></li>
-              <li class="nav-item"><%= link_to "Register", new_user_registration_path, class: "nav-link" %></li>
+              <li><%= link_to "Sign in", new_user_session_path, class: "pm-btn-ghost" %></li>
+              <li><%= link_to "Register", new_user_registration_path, class: "pm-btn-primary" %></li>
             <% end %>
           </ul>
         </div>
       </div>
     </nav>
 
-    <main class="container my-5">
-      <%= render "shared/flash" %>
-      <%= yield %>
+    <main class="pm-main">
+      <div class="container">
+        <%= render "shared/flash" %>
+        <%= yield %>
+      </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      const toggler = document.getElementById('pm-toggler');
+      const collapse = document.getElementById('pm-nav-collapse');
+      toggler?.addEventListener('click', () => collapse?.classList.toggle('open'));
+    </script>
   </body>
 </html>
