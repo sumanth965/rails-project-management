@@ -1,0 +1,1 @@
+Schema migrations table does not exist yet.

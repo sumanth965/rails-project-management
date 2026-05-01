@@ -1,0 +1,43 @@
+Database 'storage/development.sqlite3' already exists
+bin/rails aborted!
+ArgumentError: wrong number of arguments (given 0, expected 1..2) (ArgumentError)
+
+    caller: c:/Ruby/project_manager/app/models/user.rb:5
+    |   enum role: { user: 0, admin: 1 }
+        ^^^^
+    callee: C:/Ruby40-x64/lib/ruby/gems/4.0.0/gems/activerecord-8.1.3/lib/active_record/enum.rb:217
+    |     def enum(name, values = nil, **options)
+              ^^^^
+c:/Ruby/project_manager/app/models/user.rb:5:in '<class:User>'
+c:/Ruby/project_manager/app/models/user.rb:1:in '<main>'
+c:/Ruby/project_manager/config/routes.rb:2:in 'block in <main>'
+c:/Ruby/project_manager/config/routes.rb:1:in '<main>'
+Tasks: TOP => db:seed
+(See full trace by running task with --trace)
+Created database 'storage/test.sqlite3'
+== 20260430000100 CreateUsers: migrating ======================================
+-- create_table(:users)
+   -> 0.0041s
+-- add_index(:users, :email, {unique: true})
+   -> 0.0016s
+-- add_index(:users, :reset_password_token, {unique: true})
+   -> 0.0017s
+== 20260430000100 CreateUsers: migrated (0.0075s) =============================
+
+== 20260430000200 CreateProjects: migrating ===================================
+-- create_table(:projects)
+   -> 0.0110s
+== 20260430000200 CreateProjects: migrated (0.0110s) ==========================
+
+== 20260430000300 CreateProjectMemberships: migrating =========================
+-- create_table(:project_memberships)
+   -> 0.0184s
+-- add_index(:project_memberships, [:project_id, :user_id], {unique: true})
+   -> 0.0045s
+== 20260430000300 CreateProjectMemberships: migrated (0.0231s) ================
+
+== 20260430000400 CreateTasks: migrating ======================================
+-- create_table(:tasks)
+   -> 0.0138s
+== 20260430000400 CreateTasks: migrated (0.0139s) =============================
+
