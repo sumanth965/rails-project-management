@@ -17,7 +17,7 @@ class DashboardController < ApplicationController
                            .count
 
     @completed_tasks_count = Task.where(project_id: @accessible_project_ids)
-                                 .where(status: :completed)
+                                 .where(status: :done)
                                  .count
 
     @team_members_count = User.joins(:project_memberships)

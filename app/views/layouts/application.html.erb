@@ -28,7 +28,7 @@
           <span class="material-symbols-outlined">menu</span>
         </button>
         <div>
-          <div class="navbar__title"><%= content_for(:page_title) { "Dashboard" } %></div>
+          <div class="navbar__title"><%= content_for?(:page_title) ? yield(:page_title) : "Dashboard" %></div>
           <div class="navbar__breadcrumb">
             <span class="material-symbols-outlined" style="font-size:13px">home</span>
             <span>Clariti PM</span>
