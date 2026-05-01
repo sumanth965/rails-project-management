@@ -1,10 +1,13 @@
 Rails.application.routes.draw do
   devise_for :users, sign_out_via: %i[delete get]
 
-  root to: "projects#index"
+  root to: "dashboard#show"
+
+  get "dashboard", to: "dashboard#show"
 
   resources :projects do
     resources :tasks, except: %i[index]
+    patch "tasks/:id/move", to: "tasks#move", as: :move_task
   end
 
   namespace :api do
