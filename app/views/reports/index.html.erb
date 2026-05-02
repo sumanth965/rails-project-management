@@ -1,0 +1,93 @@
+<% content_for :page_title, "System Reports" %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Reports & Analytics</h1>
+    <p class="page-subtitle">A high-level overview of workspace performance and project health.</p>
+  </div>
+  <button class="btn btn-secondary">
+    <span class="material-symbols-outlined">download</span>
+    Export Data
+  </button>
+</div>
+
+<!-- Stat Grid -->
+<div class="stat-grid">
+  <div class="stat-card stat-card--blue">
+    <div>
+      <div class="stat-card__label">Active Projects</div>
+      <div class="stat-card__value"><%= @projects.count %></div>
+    </div>
+    <div class="stat-card__icon">
+      <span class="material-symbols-outlined">folder</span>
+    </div>
+  </div>
+
+  <div class="stat-card stat-card--purple">
+    <div>
+      <div class="stat-card__label">Total Tasks</div>
+      <div class="stat-card__value"><%= @total_tasks %></div>
+    </div>
+    <div class="stat-card__icon">
+      <span class="material-symbols-outlined">assignment</span>
+    </div>
+  </div>
+
+  <div class="stat-card stat-card--green">
+    <div>
+      <div class="stat-card__label">Completion Rate</div>
+      <div class="stat-card__value"><%= @total_tasks.positive? ? ((@completed_tasks.to_f / @total_tasks) * 100).round : 0 %>%</div>
+    </div>
+    <div class="stat-card__icon">
+      <span class="material-symbols-outlined">check_circle</span>
+    </div>
+  </div>
+
+  <div class="stat-card stat-card--red">
+    <div>
+      <div class="stat-card__label">Overdue Tasks</div>
+      <div class="stat-card__value"><%= @overdue_tasks %></div>
+    </div>
+    <div class="stat-card__icon">
+      <span class="material-symbols-outlined">running_with_errors</span>
+    </div>
+  </div>
+</div>
+
+<div class="pm-card">
+  <div class="pm-card-header">
+    <h2 class="pm-card-title">Project Progress Details</h2>
+  </div>
+  <div class="pm-table-container">
+    <table class="pm-table">
+      <thead>
+        <tr>
+          <th>Project Name</th>
+          <th>Total Tasks</th>
+          <th>Completed</th>
+          <th style="width: 30%;">Health / Progress</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @project_stats.each do |stat| %>
+          <tr>
+            <td style="font-weight: 600;"><%= stat[:name] %></td>
+            <td><%= stat[:total] %></td>
+            <td><%= stat[:done] %></td>
+            <td>
+              <div class="project-card__progress">
+                <div class="project-card__progress-label">
+                  <span><%= stat[:progress] %>%</span>
+                  <span><%= stat[:done] %>/<%= stat[:total] %></span>
+                </div>
+                <div class="progress-bar-wrap">
+                  <div class="progress-bar-fill" style="width: <%= stat[:progress] %>%"></div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

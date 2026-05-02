@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   root to: "dashboard#show"
 
   get "dashboard", to: "dashboard#show"
+  get "my_tasks", to: "my_tasks#index"
+  get "team", to: "teams#index"
+  get "reports", to: "reports#index"
+  get "notifications", to: "notifications#index"
 
   get "api_token", to: "api_tokens#show"
   post "api_token/regenerate", to: "api_tokens#regenerate"

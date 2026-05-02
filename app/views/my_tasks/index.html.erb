@@ -1,0 +1,115 @@
+<% content_for :page_title, "My Tasks" %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">My Tasks</h1>
+    <p class="page-subtitle">Personal tasks assigned to you across all projects</p>
+  </div>
+  <div style="display: flex; gap: 10px;">
+    <%= link_to projects_path, class: "btn btn-secondary" do %>
+      <span class="material-symbols-outlined">folder_open</span>
+      Go to Projects
+    <% end %>
+  </div>
+</div>
+
+<!-- Filters -->
+<div class="pm-card" style="margin-bottom: 24px;">
+  <div class="pm-card-body" style="padding: 16px 24px;">
+    <form action="<%= my_tasks_path %>" method="get" style="display: flex; gap: 16px; align-items: flex-end;">
+      <div style="flex: 1;">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-control" onchange="this.form.submit()">
+          <option value="">All Statuses</option>
+          <% Task.statuses.keys.each do |status| %>
+            <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.humanize %></option>
+          <% end %>
+        </select>
+      </div>
+      <div style="flex: 1;">
+        <label class="form-label">Priority</label>
+        <select name="priority" class="form-control" onchange="this.form.submit()">
+          <option value="">All Priorities</option>
+          <% Task.priorities.keys.each do |priority| %>
+            <option value="<%= priority %>" <%= 'selected' if params[:priority] == priority %>><%= priority.humanize %></option>
+          <% end %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-secondary">
+        <span class="material-symbols-outlined">filter_alt</span>
+        Filter
+      </button>
+      <%= link_to my_tasks_path, class: "btn btn-ghost" do %>
+        Clear
+      <% end %>
+    </form>
+  </div>
+</div>
+
+<% if @tasks.any? %>
+  <div class="pm-card">
+    <div class="pm-table-container" style="overflow-x: auto;">
+      <table class="pm-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Project</th>
+            <th>Status</th>
+            <th>Priority</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tasks.each do |task| %>
+            <tr>
+              <td>
+                <div style="font-weight: 600;"><%= task.title %></div>
+                <div class="text-muted" style="font-size: 12px;"><%= truncate(task.description, length: 60) %></div>
+              </td>
+              <td>
+                <div class="project-card__code" style="font-size: 9px; margin-bottom: 0;">
+                  <%= task.project.name %>
+                </div>
+              </td>
+              <td>
+                <span class="badge badge-<%= task.status.parameterize %>">
+                  <%= task.status.humanize %>
+                </span>
+              </td>
+              <td>
+                <span class="badge badge-<%= task.priority.parameterize %>">
+                  <%= task.priority.humanize %>
+                </span>
+              </td>
+              <td>
+                <div class="<%= 'text-danger' if task.overdue? %>" style="display: flex; align-items: center; gap: 4px; font-size: 13px;">
+                  <span class="material-symbols-outlined" style="font-size: 14px;">calendar_today</span>
+                  <%= task.due_date.strftime("%b %d, %Y") %>
+                </div>
+              </td>
+              <td>
+                <div style="display: flex; gap: 4px;">
+                  <%= link_to project_task_path(task.project, task), class: "btn btn-ghost btn-sm", title: "View Details" do %>
+                    <span class="material-symbols-outlined">visibility</span>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<% else %>
+  <div class="pm-card">
+    <div class="empty-state">
+      <span class="material-symbols-outlined">task_alt</span>
+      <h3>No tasks found</h3>
+      <p>You don't have any tasks assigned that match your filters.</p>
+      <%= link_to projects_path, class: "btn btn-primary" do %>
+        Browse Projects
+      <% end %>
+    </div>
+  </div>
+<% end %>

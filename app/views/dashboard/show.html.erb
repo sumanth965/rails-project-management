@@ -161,20 +161,23 @@
       </div>
       <div class="pm-card-body" style="padding: 0;">
         <% @projects.each do |project| %>
-          <div style="padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px;">
-            <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--indigo-600); display: grid; place-items: center; color: white; font-weight: 800; font-size: 12px;">
-              <%= project.code[0..1].upcase %>
-            </div>
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-                <span style="font-size: 14px; font-weight: 700;"><%= project.name %></span>
-                <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;"><%= project.progress_percentage %>% COMPLETE</span>
+          <%= link_to project_path(project), style: "text-decoration: none; color: inherit; display: block;" do %>
+            <div class="dashboard-project-row" style="padding: 12px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 16px; transition: background 0.2s;">
+              <div style="width: 36px; height: 36px; border-radius: 8px; background: var(--indigo-600); display: grid; place-items: center; color: white; font-weight: 800; font-size: 12px;">
+                <%= project.code[0..1].upcase %>
               </div>
-              <div class="progress-bar-wrap" style="height: 6px; background: #e2e8f0;">
-                <div class="progress-bar-fill" style="width: <%= project.progress_percentage %>%"></div>
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                  <span style="font-size: 14px; font-weight: 700;"><%= project.name %></span>
+                  <span style="font-size: 11px; color: var(--text-muted); font-weight: 600;"><%= project.progress_percentage %>% COMPLETE</span>
+                </div>
+                <div class="progress-bar-wrap" style="height: 6px; background: #e2e8f0;">
+                  <div class="progress-bar-fill" style="width: <%= project.progress_percentage %>%"></div>
+                </div>
               </div>
+              <span class="material-symbols-outlined" style="font-size: 18px; color: var(--text-muted);">chevron_right</span>
             </div>
-          </div>
+          <% end %>
         <% end %>
       </div>
     </div>

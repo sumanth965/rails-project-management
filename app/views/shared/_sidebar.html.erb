@@ -24,28 +24,28 @@
       Projects
     <% end %>
 
-    <a href="#" class="sidebar__link">
+    <%= link_to my_tasks_path, class: "sidebar__link #{current_page?(my_tasks_path) ? 'active' : ''}" do %>
       <span class="material-symbols-outlined">task_alt</span>
       My Tasks
-    </a>
+    <% end %>
 
-    <a href="#" class="sidebar__link">
+    <%= link_to team_path, class: "sidebar__link #{current_page?(team_path) ? 'active' : ''}" do %>
       <span class="material-symbols-outlined">group</span>
       Team
-    </a>
+    <% end %>
 
     <div class="sidebar__section-label">Manage</div>
 
-    <a href="#" class="sidebar__link">
+    <%= link_to reports_path, class: "sidebar__link #{current_page?(reports_path) ? 'active' : ''}" do %>
       <span class="material-symbols-outlined">bar_chart</span>
       Reports
-    </a>
+    <% end %>
 
-    <a href="#" class="sidebar__link">
+    <%= link_to notifications_path, class: "sidebar__link #{current_page?(notifications_path) ? 'active' : ''}" do %>
       <span class="material-symbols-outlined">notifications</span>
       Notifications
-      <span class="sidebar__link-badge">3</span>
-    </a>
+      <span class="sidebar__link-badge">2</span>
+    <% end %>
 
     <%= link_to edit_user_registration_path, class: "sidebar__link #{current_page?(edit_user_registration_path) ? 'active' : ''}" do %>
       <span class="material-symbols-outlined">settings</span>

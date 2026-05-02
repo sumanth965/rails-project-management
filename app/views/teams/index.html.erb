@@ -1,0 +1,64 @@
+<% content_for :page_title, "Team Members" %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Team</h1>
+    <p class="page-subtitle">View and manage your workspace members</p>
+  </div>
+  <button class="btn btn-primary">
+    <span class="material-symbols-outlined">person_add</span>
+    Invite Member
+  </button>
+</div>
+
+<div class="pm-card">
+  <div class="pm-card-header">
+    <h2 class="pm-card-title">All Members (<%= @users.count %>)</h2>
+    <div class="navbar__icon-btn">
+      <span class="material-symbols-outlined">filter_list</span>
+    </div>
+  </div>
+  <div class="pm-table-container" style="overflow-x: auto;">
+    <table class="pm-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Projects</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td>
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <div class="sidebar__avatar" style="width: 32px; height: 32px; font-size: 11px;">
+                  <%= user.name[0].upcase %>
+                </div>
+                <div style="font-weight: 600;"><%= user.name %></div>
+              </div>
+            </td>
+            <td class="text-secondary"><%= user.email %></td>
+            <td>
+              <span class="badge badge-planned">
+                <%= user.role.humanize %>
+              </span>
+            </td>
+            <td>
+              <div class="text-secondary" style="font-size: 13px;">
+                <%= user.projects.count %> Projects
+              </div>
+            </td>
+            <td>
+              <button class="btn btn-ghost btn-sm" title="View Profile">
+                <span class="material-symbols-outlined">visibility</span>
+              </button>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

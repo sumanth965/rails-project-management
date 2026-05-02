@@ -1,0 +1,96 @@
+<% content_for :page_title, "Notifications" %>
+
+<div class="page-header">
+  <div>
+    <h1 class="page-title">Notifications</h1>
+    <p class="page-subtitle">Stay updated with the latest activity in your workspace.</p>
+  </div>
+  <div style="display: flex; gap: 8px;">
+    <button class="btn btn-secondary btn-sm">Mark all as read</button>
+    <button class="btn btn-ghost btn-sm">
+      <span class="material-symbols-outlined">settings</span>
+    </button>
+  </div>
+</div>
+
+<div class="pm-card">
+  <div class="pm-card-header">
+    <h2 class="pm-card-title">Recent Activity</h2>
+  </div>
+  <div class="pm-card-body" style="padding: 0;">
+    <% if @notifications.any? %>
+      <div class="notification-list">
+        <% @notifications.each do |notif| %>
+          <div class="notification-item <%= 'notification-item--unread' if notif[:unread] %>" 
+               style="padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: flex-start; transition: background 0.2s;">
+            
+            <div class="notification-icon" style="
+              width: 38px; height: 38px; border-radius: 50%; 
+              display: grid; place-items: center; flex-shrink: 0;
+              background: <%= 
+                case notif[:type]
+                when :task then 'var(--indigo-50)'
+                when :project then 'var(--bg)'
+                when :comment then '#f0fdf4'
+                when :alert then '#fef2f2'
+                else 'var(--bg)'
+                end
+              %>;
+              color: <%=
+                case notif[:type]
+                when :task then 'var(--indigo-600)'
+                when :project then 'var(--text-secondary)'
+                when :comment then 'var(--green)'
+                when :alert then 'var(--red)'
+                else 'var(--text-muted)'
+                end
+              %>;">
+              <span class="material-symbols-outlined" style="font-size: 20px;">
+                <%= 
+                  case notif[:type]
+                  when :task then 'assignment'
+                  when :project then 'folder'
+                  when :comment then 'chat_bubble'
+                  when :alert then 'warning'
+                  else 'notifications'
+                  end
+                %>
+              </span>
+            </div>
+
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px;">
+                <p style="font-size: 14px; font-weight: <%= notif[:unread] ? '600' : '400' %>; color: var(--text-primary);">
+                  <%= notif[:message] %>
+                </p>
+                <span style="font-size: 12px; color: var(--text-muted);"><%= notif[:time] %></span>
+              </div>
+              <div style="display: flex; gap: 8px;">
+                <button class="btn btn-ghost btn-sm" style="padding: 0; font-size: 12px;">View details</button>
+                <% if notif[:unread] %>
+                  <button class="btn btn-ghost btn-sm" style="padding: 0; font-size: 12px; color: var(--indigo-600);">Mark as read</button>
+                <% end %>
+              </div>
+            </div>
+
+            <% if notif[:unread] %>
+              <div style="width: 8px; height: 8px; background: var(--blue); border-radius: 50%; margin-top: 6px;"></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="empty-state">
+        <span class="material-symbols-outlined">notifications_off</span>
+        <h3>No notifications</h3>
+        <p>You're all caught up! We'll notify you when something happens.</p>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<style>
+  .notification-item:hover { background: var(--bg); }
+  .notification-item--unread { background: rgba(59, 130, 246, 0.03); }
+  .notification-item:last-child { border-bottom: none !important; }
+</style>
