@@ -1,35 +1,112 @@
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <h1 class="mb-4">Edit Account</h1>
-        <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
-          <div class="mb-3">
-            <%= f.label :name, class: "form-label" %>
-            <%= f.text_field :name, class: "form-control" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :email, class: "form-label" %>
-            <%= f.email_field :email, class: "form-control" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :password, class: "form-label" %>
-            <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :password_confirmation, class: "form-label" %>
-            <%= f.password_field :password_confirmation, class: "form-control" %>
-          </div>
-          <div class="mb-3">
-            <%= f.label :current_password, class: "form-label" %>
-            <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control" %>
-          </div>
-          <div class="d-flex gap-2">
-            <%= f.submit "Update", class: "btn btn-primary" %>
-            <%= link_to "Back", root_path, class: "btn btn-link" %>
-          </div>
-        <% end %>
+<!-- Enhanced Settings Page -->
+<div style="max-width: 800px; margin: 0 auto;">
+  
+  <!-- Enhanced Header with Gradient -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 32px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; filter: blur(40px);"></div>
+    <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; filter: blur(30px);"></div>
+    
+    <div style="position: relative; z-index: 1;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <div style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(10px);">
+          <span class="material-symbols-outlined" style="color: white; font-size: 28px;">settings</span>
+        </div>
+        <div>
+          <h1 style="font-size: 32px; font-weight: 900; color: white; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">Account Settings</h1>
+          <p style="font-size: 14px; color: rgba(255, 255, 255, 0.9); margin: 0; font-weight: 500;">Manage your profile and preferences</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Enhanced Settings Card -->
+  <div style="background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05);">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+          <span class="material-symbols-outlined" style="color: white; font-size: 22px;">person</span>
+        </div>
+        <div>
+          <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">Profile Information</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Update your account details</p>
+        </div>
+      </div>
+    </div>
+    
+    <div style="padding: 32px;">
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+        
+        <!-- Name Field -->
+        <div style="margin-bottom: 24px;">
+          <%= f.label :name, class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+          <div style="position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">person</span>
+            <%= f.text_field :name, class: "form-control", style: "width: 100%; padding: 12px 14px 12px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+          </div>
+        </div>
+
+        <!-- Email Field -->
+        <div style="margin-bottom: 24px;">
+          <%= f.label :email, class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+          <div style="position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">email</span>
+            <%= f.email_field :email, class: "form-control", style: "width: 100%; padding: 12px 14px 12px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div style="border-top: 2px solid #f1f5f9; margin: 32px 0; position: relative;">
+          <span style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: white; padding: 0 16px; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Change Password</span>
+        </div>
+
+        <!-- Password Field -->
+        <div style="margin-bottom: 24px;">
+          <%= f.label :password, "New Password (leave blank if you don't want to change it)", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+          <div style="position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">lock</span>
+            <%= f.password_field :password, autocomplete: "new-password", class: "form-control", style: "width: 100%; padding: 12px 14px 12px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+          </div>
+        </div>
+
+        <!-- Password Confirmation Field -->
+        <div style="margin-bottom: 24px;">
+          <%= f.label :password_confirmation, class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+          <div style="position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">lock</span>
+            <%= f.password_field :password_confirmation, class: "form-control", style: "width: 100%; padding: 12px 14px 12px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+          </div>
+        </div>
+
+        <!-- Current Password Field -->
+        <div style="margin-bottom: 32px;">
+          <%= f.label :current_password, "Current Password (required to confirm changes)", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+          <div style="position: relative;">
+            <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">verified_user</span>
+            <%= f.password_field :current_password, autocomplete: "current-password", class: "form-control", style: "width: 100%; padding: 12px 14px 12px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div style="display: flex; gap: 12px; padding-top: 24px; border-top: 2px solid #f1f5f9;">
+          <%= f.submit "Update Account", class: "btn", style: "background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; display: flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); transition: all 0.3s; cursor: pointer;" %>
+          <%= link_to root_path, style: "background: #f3f4f6; color: var(--text-primary); border: none; display: flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 12px; font-size: 14px; font-weight: 700; transition: all 0.3s; text-decoration: none;" do %>
+            <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+            Cancel
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
+
+<style>
+  .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5) !important;
+  }
+</style>

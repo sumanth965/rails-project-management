@@ -1,45 +1,107 @@
 <%= form_with(model: [@project, @task], local: true) do |form| %>
   <% if @task.errors.any? %>
-    <div class="flash flash-error" style="margin-bottom:20px;">
-      <span class="material-symbols-outlined">error</span>
-      <span><%= pluralize(@task.errors.count, "error") %>: <%= @task.errors.full_messages.first %></span>
+    <div style="background: linear-gradient(135deg, #fee2e2, #fecaca); border: 2px solid #ef4444; border-radius: 12px; padding: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 12px;">
+      <div style="width: 40px; height: 40px; background: #ef4444; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0;">
+        <span class="material-symbols-outlined" style="color: white; font-size: 22px;">error</span>
+      </div>
+      <div>
+        <div style="font-weight: 700; color: #dc2626; margin-bottom: 4px;"><%= pluralize(@task.errors.count, "error") %> prevented this task from being saved:</div>
+        <div style="font-size: 13px; color: #991b1b;"><%= @task.errors.full_messages.first %></div>
+      </div>
     </div>
   <% end %>
 
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-    <div class="form-group" style="grid-column:1/-1;">
-      <%= form.label :title, "Task Title", class: "form-label" %>
-      <%= form.text_field :title, class: "form-control", placeholder: "What needs to be done?", autofocus: true %>
+  <div style="display: grid; gap: 24px;">
+    
+    <!-- Task Title -->
+    <div>
+      <%= form.label :title, "Task Title", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+      <div style="position: relative;">
+        <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">task_alt</span>
+        <%= form.text_field :title, class: "form-control", placeholder: "e.g. Design landing page mockup", autofocus: true, style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 15px; font-weight: 500; transition: all 0.3s;" %>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">Provide a clear, concise title for this task</p>
     </div>
 
-    <div class="form-group" style="grid-column:1/-1;">
-      <%= form.label :description, "Description", class: "form-label" %>
-      <%= form.text_area :description, rows: 4, class: "form-control", placeholder: "Add more context..." %>
+    <!-- Description -->
+    <div>
+      <%= form.label :description, "Description", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+      <div style="position: relative;">
+        <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 14px; font-size: 20px; color: var(--text-muted);">description</span>
+        <%= form.text_area :description, rows: 5, class: "form-control", placeholder: "Add detailed information about what needs to be done...", style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s; resize: vertical;" %>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">Provide context, requirements, and acceptance criteria</p>
     </div>
 
-    <div class="form-group">
-      <%= form.label :due_date, "Due Date", class: "form-label" %>
-      <%= form.date_field :due_date, class: "form-control" %>
+    <!-- Due Date and Status Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      
+      <!-- Due Date -->
+      <div>
+        <%= form.label :due_date, "Due Date", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+        <div style="position: relative;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">calendar_today</span>
+          <%= form.date_field :due_date, class: "form-control", style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s;" %>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">When should this be completed?</p>
+      </div>
+
+      <!-- Status -->
+      <div>
+        <%= form.label :status, "Status", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+        <div style="position: relative;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">flag</span>
+          <%= form.select :status, Task.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "form-control", style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 40px;" %>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">Current task status</p>
+      </div>
     </div>
 
-    <div class="form-group">
-      <%= form.label :status, "Status", class: "form-label" %>
-      <%= form.select :status, Task.statuses.keys.map { |s| [s.humanize, s] }, {}, class: "form-control" %>
+    <!-- Priority and Assignee Grid -->
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+      
+      <!-- Priority -->
+      <div>
+        <%= form.label :priority, "Priority", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+        <div style="position: relative;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">priority_high</span>
+          <%= form.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, {}, class: "form-control", style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 40px;" %>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">How urgent is this task?</p>
+      </div>
+
+      <!-- Assign To -->
+      <div>
+        <%= form.label :assigned_user_id, "Assign To", class: "form-label", style: "display: block; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;" %>
+        <div style="position: relative;">
+          <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted); z-index: 1;">person</span>
+          <%= form.collection_select :assigned_user_id, @project.members, :id, :name, { prompt: "Unassigned" }, class: "form-control", style: "width: 100%; padding: 14px 14px 14px 46px; border: 2px solid #e5e7eb; border-radius: 12px; font-size: 14px; font-weight: 500; transition: all 0.3s; appearance: none; background-image: url('data:image/svg+xml;charset=UTF-8,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 24 24%27 fill=%27none%27 stroke=%27currentColor%27 stroke-width=%272%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27%3e%3cpolyline points=%276 9 12 15 18 9%27%3e%3c/polyline%3e%3c/svg%3e'); background-repeat: no-repeat; background-position: right 14px center; background-size: 16px; padding-right: 40px;" %>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted); margin-top: 6px; margin-bottom: 0;">Who will work on this?</p>
+      </div>
     </div>
 
-    <div class="form-group">
-      <%= form.label :priority, "Priority", class: "form-label" %>
-      <%= form.select :priority, Task.priorities.keys.map { |p| [p.humanize, p] }, {}, class: "form-control" %>
-    </div>
-
-    <div class="form-group">
-      <%= form.label :assigned_user_id, "Assign To", class: "form-label" %>
-      <%= form.collection_select :assigned_user_id, @project.members, :id, :name, { prompt: "Unassigned" }, class: "form-control" %>
-    </div>
   </div>
 
-  <div style="display:flex;gap:10px;padding-top:8px;border-top:1px solid var(--border);margin-top:8px;">
-    <%= form.submit class: "btn btn-primary" %>
-    <%= link_to "Cancel", project_path(@project), class: "btn btn-secondary" %>
+  <!-- Action Buttons -->
+  <div style="display: flex; gap: 12px; padding-top: 32px; margin-top: 32px; border-top: 2px solid #f1f5f9;">
+    <%= form.submit @task.new_record? ? "Create Task" : "Update Task", class: "btn", style: "background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; display: flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 700; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); transition: all 0.3s; cursor: pointer;" %>
+    <%= link_to project_path(@project), style: "background: #f3f4f6; color: var(--text-primary); border: none; display: flex; align-items: center; gap: 8px; padding: 14px 32px; border-radius: 12px; font-size: 15px; font-weight: 700; transition: all 0.3s; text-decoration: none;" do %>
+      <span class="material-symbols-outlined" style="font-size: 18px;">close</span>
+      Cancel
+    <% end %>
   </div>
 <% end %>
+
+<style>
+  .form-control:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+    outline: none;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5) !important;
+  }
+</style>

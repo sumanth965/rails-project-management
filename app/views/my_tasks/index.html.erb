@@ -1,45 +1,67 @@
 <% content_for :page_title, "My Tasks" %>
 
-<div class="page-header">
-  <div>
-    <h1 class="page-title">My Tasks</h1>
-    <p class="page-subtitle">Personal tasks assigned to you across all projects</p>
-  </div>
-  <div style="display: flex; gap: 10px;">
-    <%= link_to projects_path, class: "btn btn-secondary" do %>
-      <span class="material-symbols-outlined">folder_open</span>
+<!-- Enhanced Header with Gradient -->
+<div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 32px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+  <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; filter: blur(40px);"></div>
+  <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; filter: blur(30px);"></div>
+  
+  <div style="position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap;">
+    <div>
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+        <div style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(10px);">
+          <span class="material-symbols-outlined" style="color: white; font-size: 28px;">task_alt</span>
+        </div>
+        <div>
+          <h1 style="font-size: 32px; font-weight: 900; color: white; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">My Tasks</h1>
+          <p style="font-size: 14px; color: rgba(255, 255, 255, 0.9); margin: 0; font-weight: 500;">Personal tasks assigned to you across all projects</p>
+        </div>
+      </div>
+    </div>
+    <%= link_to projects_path, style: "background: white; color: #667eea; border: none; display: flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s; text-decoration: none;" do %>
+      <span class="material-symbols-outlined" style="font-size: 20px;">folder_open</span>
       Go to Projects
     <% end %>
   </div>
 </div>
 
-<!-- Filters -->
-<div class="pm-card" style="margin-bottom: 24px;">
-  <div class="pm-card-body" style="padding: 16px 24px;">
-    <form action="<%= my_tasks_path %>" method="get" style="display: flex; gap: 16px; align-items: flex-end;">
-      <div style="flex: 1;">
-        <label class="form-label">Status</label>
-        <select name="status" class="form-control" onchange="this.form.submit()">
+<!-- Enhanced Filters Card -->
+<div style="background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05); margin-bottom: 32px;">
+  <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 20px 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 10px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+        <span class="material-symbols-outlined" style="color: white; font-size: 20px;">filter_alt</span>
+      </div>
+      <div>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text-primary); margin: 0;">Filter Tasks</h3>
+        <p style="font-size: 11px; color: var(--text-muted); margin: 0;">Refine your task list</p>
+      </div>
+    </div>
+  </div>
+  <div style="padding: 24px;">
+    <form action="<%= my_tasks_path %>" method="get" style="display: grid; grid-template-columns: 1fr 1fr auto auto; gap: 16px; align-items: end;">
+      <div>
+        <label class="form-label" style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;">Status</label>
+        <select name="status" class="form-control" onchange="this.form.submit()" style="padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-weight: 500;">
           <option value="">All Statuses</option>
           <% Task.statuses.keys.each do |status| %>
             <option value="<%= status %>" <%= 'selected' if params[:status] == status %>><%= status.humanize %></option>
           <% end %>
         </select>
       </div>
-      <div style="flex: 1;">
-        <label class="form-label">Priority</label>
-        <select name="priority" class="form-control" onchange="this.form.submit()">
+      <div>
+        <label class="form-label" style="display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-secondary); margin-bottom: 8px;">Priority</label>
+        <select name="priority" class="form-control" onchange="this.form.submit()" style="padding: 10px 14px; border: 2px solid #e5e7eb; border-radius: 10px; font-size: 14px; font-weight: 500;">
           <option value="">All Priorities</option>
           <% Task.priorities.keys.each do |priority| %>
             <option value="<%= priority %>" <%= 'selected' if params[:priority] == priority %>><%= priority.humanize %></option>
           <% end %>
         </select>
       </div>
-      <button type="submit" class="btn btn-secondary">
-        <span class="material-symbols-outlined">filter_alt</span>
+      <button type="submit" class="btn" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; display: flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+        <span class="material-symbols-outlined" style="font-size: 18px;">filter_alt</span>
         Filter
       </button>
-      <%= link_to my_tasks_path, class: "btn btn-ghost" do %>
+      <%= link_to my_tasks_path, class: "btn", style: "background: #f3f4f6; color: var(--text-primary); border: none; display: flex; align-items: center; gap: 6px; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 700; text-decoration: none;" do %>
         Clear
       <% end %>
     </form>
@@ -47,53 +69,67 @@
 </div>
 
 <% if @tasks.any? %>
-  <div class="pm-card">
-    <div class="pm-table-container" style="overflow-x: auto;">
+  <!-- Enhanced Tasks Card -->
+  <div style="background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05);">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+            <span class="material-symbols-outlined" style="color: white; font-size: 22px;">list_alt</span>
+          </div>
+          <div>
+            <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">Your Tasks</h2>
+            <p style="font-size: 12px; color: var(--text-muted); margin: 0;">All assigned tasks</p>
+          </div>
+        </div>
+        <div style="background: white; padding: 8px 16px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);">
+          <span style="font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted);">Total</span>
+          <span style="font-size: 20px; font-weight: 900; color: var(--text-primary); margin-left: 8px;"><%= @tasks.count %></span>
+        </div>
+      </div>
+    </div>
+    <div style="overflow-x: auto;">
       <table class="pm-table">
         <thead>
-          <tr>
-            <th>Task</th>
-            <th>Project</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Due Date</th>
-            <th>Actions</th>
+          <tr style="background: #f8f9fa;">
+            <th style="padding: 16px 24px; font-weight: 700;">Task</th>
+            <th style="padding: 16px 24px; font-weight: 700;">Project</th>
+            <th style="padding: 16px 24px; font-weight: 700;">Status</th>
+            <th style="padding: 16px 24px; font-weight: 700;">Priority</th>
+            <th style="padding: 16px 24px; font-weight: 700;">Due Date</th>
+            <th style="padding: 16px 24px; font-weight: 700;">Actions</th>
           </tr>
         </thead>
         <tbody>
           <% @tasks.each do |task| %>
-            <tr>
-              <td>
-                <div style="font-weight: 600;"><%= task.title %></div>
-                <div class="text-muted" style="font-size: 12px;"><%= truncate(task.description, length: 60) %></div>
+            <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s;">
+              <td style="padding: 16px 24px;">
+                <div style="font-weight: 700; font-size: 14px; color: var(--text-primary); margin-bottom: 4px;"><%= task.title %></div>
+                <div style="font-size: 12px; color: var(--text-muted); line-height: 1.4;"><%= truncate(task.description, length: 60) %></div>
               </td>
-              <td>
-                <div class="project-card__code" style="font-size: 9px; margin-bottom: 0;">
-                  <%= task.project.name %>
+              <td style="padding: 16px 24px;">
+                <div style="display: inline-flex; align-items: center; gap: 6px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); padding: 6px 12px; border-radius: 8px;">
+                  <span class="material-symbols-outlined" style="font-size: 14px; color: #1e40af;">folder</span>
+                  <span style="font-size: 12px; font-weight: 700; color: #1e40af;"><%= task.project.name %></span>
                 </div>
               </td>
-              <td>
-                <span class="badge badge-<%= task.status.parameterize %>">
-                  <%= task.status.humanize %>
-                </span>
+              <td style="padding: 16px 24px;">
+                <%= status_badge(task.status) %>
               </td>
-              <td>
-                <span class="badge badge-<%= task.priority.parameterize %>">
-                  <%= task.priority.humanize %>
-                </span>
+              <td style="padding: 16px 24px;">
+                <%= priority_badge(task.priority) %>
               </td>
-              <td>
-                <div class="<%= 'text-danger' if task.overdue? %>" style="display: flex; align-items: center; gap: 4px; font-size: 13px;">
-                  <span class="material-symbols-outlined" style="font-size: 14px;">calendar_today</span>
+              <td style="padding: 16px 24px;">
+                <div style="display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 600; color: <%= task.overdue? ? '#dc2626' : 'var(--text-primary)' %>;">
+                  <span class="material-symbols-outlined" style="font-size: 16px; color: <%= task.overdue? ? '#dc2626' : 'var(--text-muted)' %>;">calendar_today</span>
                   <%= task.due_date.strftime("%b %d, %Y") %>
                 </div>
               </td>
-              <td>
-                <div style="display: flex; gap: 4px;">
-                  <%= link_to project_task_path(task.project, task), class: "btn btn-ghost btn-sm", title: "View Details" do %>
-                    <span class="material-symbols-outlined">visibility</span>
-                  <% end %>
-                </div>
+              <td style="padding: 16px 24px;">
+                <%= link_to project_task_path(task.project, task), class: "btn btn-secondary btn-sm", style: "display: flex; align-items: center; gap: 4px; border: 1px solid var(--border);" do %>
+                  <span class="material-symbols-outlined" style="font-size: 16px;">visibility</span>
+                  View
+                <% end %>
               </td>
             </tr>
           <% end %>
@@ -102,14 +138,24 @@
     </div>
   </div>
 <% else %>
-  <div class="pm-card">
-    <div class="empty-state">
-      <span class="material-symbols-outlined">task_alt</span>
-      <h3>No tasks found</h3>
-      <p>You don't have any tasks assigned that match your filters.</p>
-      <%= link_to projects_path, class: "btn btn-primary" do %>
+  <!-- Enhanced Empty State -->
+  <div style="background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05);">
+    <div style="text-align: center; padding: 80px 24px;">
+      <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #f3f4f6, #e5e7eb); border-radius: 50%; display: grid; place-items: center; margin: 0 auto 24px;">
+        <span class="material-symbols-outlined" style="font-size: 48px; color: #9ca3af;">task_alt</span>
+      </div>
+      <h3 style="font-size: 20px; font-weight: 800; color: var(--text-primary); margin-bottom: 8px;">No tasks found</h3>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">You don't have any tasks assigned that match your filters.</p>
+      <%= link_to projects_path, class: "btn", style: "background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 700; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); text-decoration: none;" do %>
+        <span class="material-symbols-outlined" style="font-size: 20px;">folder_open</span>
         Browse Projects
       <% end %>
     </div>
   </div>
 <% end %>
+
+<style>
+  .pm-table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.03), rgba(118, 75, 162, 0.03)) !important;
+  }
+</style>

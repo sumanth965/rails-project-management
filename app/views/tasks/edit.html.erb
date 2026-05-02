@@ -1,17 +1,47 @@
 <% content_for :page_title, "Edit Task" %>
 
-<div style="max-width:640px;margin:0 auto;">
-  <div class="page-header">
-    <div>
-      <%= link_to project_path(@project), class: "btn btn-ghost btn-sm", style: "margin-bottom:8px;" do %>
-        <span class="material-symbols-outlined">arrow_back</span>
-        Back to <%= @project.name %>
-      <% end %>
-      <h1 class="page-title">Edit Task</h1>
+<div style="max-width: 900px; margin: 0 auto;">
+  
+  <!-- Enhanced Header with Gradient -->
+  <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 20px; padding: 32px; margin-bottom: 32px; box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3); position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -50px; right: -50px; width: 200px; height: 200px; background: rgba(255, 255, 255, 0.1); border-radius: 50%; filter: blur(40px);"></div>
+    <div style="position: absolute; bottom: -30px; left: -30px; width: 150px; height: 150px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; filter: blur(30px);"></div>
+    
+    <div style="position: relative; z-index: 1;">
+      <div style="margin-bottom: 16px;">
+        <%= link_to project_path(@project), style: "background: rgba(255, 255, 255, 0.2); color: white; border: 1px solid rgba(255, 255, 255, 0.3); backdrop-filter: blur(10px); display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 10px; font-size: 13px; font-weight: 600; transition: all 0.3s; text-decoration: none;" do %>
+          <span class="material-symbols-outlined" style="font-size: 18px;">arrow_back</span>
+          Back to <%= @project.name %>
+        <% end %>
+      </div>
+      
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 56px; height: 56px; background: rgba(255, 255, 255, 0.2); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(10px);">
+          <span class="material-symbols-outlined" style="color: white; font-size: 28px;">edit_note</span>
+        </div>
+        <div>
+          <h1 style="font-size: 32px; font-weight: 900; color: white; margin: 0; letter-spacing: -0.5px; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);">Edit Task</h1>
+          <p style="font-size: 14px; color: rgba(255, 255, 255, 0.9); margin: 0; font-weight: 500;">Update task details for <%= @project.name %></p>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="pm-card">
-    <div class="pm-card-body">
+
+  <!-- Enhanced Form Card -->
+  <div style="background: white; border-radius: 20px; box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08); overflow: hidden; border: 1px solid rgba(0, 0, 0, 0.05);">
+    <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); padding: 24px; border-bottom: 1px solid rgba(0, 0, 0, 0.06);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 12px; display: grid; place-items: center; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);">
+          <span class="material-symbols-outlined" style="color: white; font-size: 22px;">checklist</span>
+        </div>
+        <div>
+          <h2 style="font-size: 18px; font-weight: 800; color: var(--text-primary); margin: 0;">Task Details</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin: 0;">Update the information below</p>
+        </div>
+      </div>
+    </div>
+    
+    <div style="padding: 32px;">
       <%= render "form" %>
     </div>
   </div>
