@@ -1,64 +1,74 @@
-<aside class="sidebar" id="main-sidebar">
-  <!-- Brand -->
-  <div class="sidebar__brand">
-    <div class="sidebar__brand-icon">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">dataset</span>
-    </div>
-    <div>
-      <div class="sidebar__brand-name">Clariti PM</div>
-      <div class="sidebar__brand-sub">Workspace</div>
+<aside class="sidebar" id="main-sidebar" style="background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); border-right: 1px solid rgba(255, 255, 255, 0.1);">
+  <!-- Enhanced Brand with Gradient -->
+  <div style="padding: 24px 20px; margin-bottom: 12px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+      <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: grid; place-items: center; box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);">
+        <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1; color: white; font-size: 24px;">dataset</span>
+      </div>
+      <div>
+        <div style="font-size: 18px; font-weight: 900; color: white; letter-spacing: -0.5px;">Clariti PM</div>
+        <div style="font-size: 11px; color: rgba(255, 255, 255, 0.5); font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Workspace</div>
+      </div>
     </div>
   </div>
 
-  <!-- Main Nav -->
-  <nav class="sidebar__nav">
-    <div class="sidebar__section-label">Main</div>
+  <!-- Enhanced Navigation -->
+  <nav style="padding: 8px 16px; flex: 1; overflow-y: auto;">
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); padding: 16px 12px 8px; margin-bottom: 4px;">Main Menu</div>
 
-    <%= link_to root_path, class: "sidebar__link #{current_page?(root_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">dashboard</span>
+    <%= link_to root_path, class: "sidebar__link #{current_page?(root_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(root_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{current_page?(root_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(root_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">dashboard</span>
       Dashboard
     <% end %>
 
-    <%= link_to projects_path, class: "sidebar__link #{request.path.start_with?('/projects') ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">folder_open</span>
+    <%= link_to projects_path, class: "sidebar__link #{request.path.start_with?('/projects') ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{request.path.start_with?('/projects') ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{request.path.start_with?('/projects') ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{request.path.start_with?('/projects') ? 'font-variation-settings: \'FILL\' 1;' : ''}">folder_open</span>
       Projects
     <% end %>
 
-    <%= link_to my_tasks_path, class: "sidebar__link #{current_page?(my_tasks_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">task_alt</span>
+    <%= link_to my_tasks_path, class: "sidebar__link #{current_page?(my_tasks_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(my_tasks_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{current_page?(my_tasks_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(my_tasks_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">task_alt</span>
       My Tasks
     <% end %>
 
-    <%= link_to team_path, class: "sidebar__link #{current_page?(team_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">group</span>
+    <%= link_to team_path, class: "sidebar__link #{current_page?(team_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(team_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{current_page?(team_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(team_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">group</span>
       Team
     <% end %>
 
-    <div class="sidebar__section-label">Manage</div>
+    <div style="font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: rgba(255, 255, 255, 0.4); padding: 20px 12px 8px; margin-bottom: 4px; margin-top: 8px;">Manage</div>
 
-    <%= link_to reports_path, class: "sidebar__link #{current_page?(reports_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">bar_chart</span>
+    <%= link_to reports_path, class: "sidebar__link #{current_page?(reports_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(reports_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{current_page?(reports_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(reports_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">bar_chart</span>
       Reports
     <% end %>
 
-    <%= link_to notifications_path, class: "sidebar__link #{current_page?(notifications_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">notifications</span>
+    <%= link_to notifications_path, class: "sidebar__link #{current_page?(notifications_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(notifications_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; position: relative; #{current_page?(notifications_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(notifications_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">notifications</span>
       Notifications
-      <span class="sidebar__link-badge">2</span>
+      <span style="margin-left: auto; background: linear-gradient(135deg, #f87171, #ef4444); color: white; font-size: 11px; font-weight: 800; padding: 2px 8px; border-radius: 99px; min-width: 22px; text-align: center; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);">2</span>
     <% end %>
 
-    <%= link_to edit_user_registration_path, class: "sidebar__link #{current_page?(edit_user_registration_path) ? 'active' : ''}" do %>
-      <span class="material-symbols-outlined">settings</span>
+    <%= link_to edit_user_registration_path, class: "sidebar__link #{current_page?(edit_user_registration_path) ? 'active' : ''}", style: "display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; color: #{current_page?(edit_user_registration_path) ? 'white' : 'rgba(255, 255, 255, 0.7)'}; font-size: 14px; font-weight: 600; transition: all 0.3s; margin-bottom: 6px; text-decoration: none; #{current_page?(edit_user_registration_path) ? 'background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);' : ''}" do %>
+      <span class="material-symbols-outlined" style="font-size: 22px; #{current_page?(edit_user_registration_path) ? 'font-variation-settings: \'FILL\' 1;' : ''}">settings</span>
       Settings
     <% end %>
   </nav>
 
-  <!-- User section at bottom -->
-  <div class="sidebar__user">
-    <div class="sidebar__avatar"><%= current_user.name[0].upcase %></div>
-    <div style="flex:1;min-width:0;">
-      <div class="sidebar__user-name"><%= current_user.name %></div>
-      <div class="sidebar__user-role"><%= current_user.email %></div>
+  <!-- Enhanced User Section -->
+  <div style="padding: 16px 20px; border-top: 1px solid rgba(255, 255, 255, 0.1); background: rgba(0, 0, 0, 0.2); backdrop-filter: blur(10px);">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #667eea, #764ba2); display: grid; place-items: center; font-size: 16px; font-weight: 900; color: white; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);">
+        <%= current_user.name[0].upcase %>
+      </div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-size: 14px; font-weight: 700; color: white; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+          <%= current_user.name %>
+        </div>
+        <div style="font-size: 11px; color: rgba(255, 255, 255, 0.5); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 2px;">
+          <%= current_user.email %>
+        </div>
+      </div>
     </div>
   </div>
 </aside>

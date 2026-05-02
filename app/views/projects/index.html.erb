@@ -1,25 +1,74 @@
 <% content_for :page_title, "Projects" %>
 
+<!-- Page Header -->
 <div class="page-header">
   <div>
-    <h1 class="page-title">Projects</h1>
-    <p class="page-subtitle">Manage and track all your active projects.</p>
+    <h1 class="page-title">Projects Overview</h1>
+    <p class="page-subtitle">Manage and track all your active projects</p>
   </div>
-  <%= link_to new_project_path, class: "btn btn-primary" do %>
+  <%= link_to new_project_path, class: "btn btn-primary btn-lg" do %>
     <span class="material-symbols-outlined">add</span>
     New Project
   <% end %>
 </div>
 
-<!-- Search -->
-<div style="margin-bottom:24px;">
-  <%= form_with url: projects_path, method: :get, local: true, style: "display:flex;gap:10px;max-width:480px;" do |form| %>
-    <div style="position:relative;flex:1;">
-      <span class="material-symbols-outlined" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:18px;color:var(--text-muted);">search</span>
-      <%= form.text_field :q, value: @query, placeholder: "Search projects...", class: "form-control", style: "padding-left:40px;" %>
+<!-- Stats Overview -->
+<div class="stat-grid" style="gap: 16px; margin-bottom: 24px;">
+  <div class="stat-card" style="background: #3b82f6; padding: 16px 20px;">
+    <div style="flex: 1;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="material-symbols-outlined" style="font-size: 20px; opacity: 0.9;">folder</span>
+        <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Total Projects</div>
+      </div>
+      <div style="font-size: 28px; font-weight: 800;"><%= @projects.count %></div>
     </div>
-    <%= form.submit "Search", class: "btn btn-secondary" %>
-  <% end %>
+  </div>
+
+  <div class="stat-card" style="background: #10b981; padding: 16px 20px;">
+    <div style="flex: 1;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="material-symbols-outlined" style="font-size: 20px; opacity: 0.9;">check_circle</span>
+        <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Active Projects</div>
+      </div>
+      <div style="font-size: 28px; font-weight: 800;"><%= @projects.count { |p| p.status == 'active' } %></div>
+    </div>
+  </div>
+
+  <div class="stat-card" style="background: #8b5cf6; padding: 16px 20px;">
+    <div style="flex: 1;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="material-symbols-outlined" style="font-size: 20px; opacity: 0.9;">schedule</span>
+        <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Planned Projects</div>
+      </div>
+      <div style="font-size: 28px; font-weight: 800;"><%= @projects.count { |p| p.status == 'planned' } %></div>
+    </div>
+  </div>
+
+  <div class="stat-card" style="background: #f87171; padding: 16px 20px;">
+    <div style="flex: 1;">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+        <span class="material-symbols-outlined" style="font-size: 20px; opacity: 0.9;">task_alt</span>
+        <div style="font-size: 11px; font-weight: 700; opacity: 0.9; text-transform: uppercase; letter-spacing: 0.5px;">Completed Projects</div>
+      </div>
+      <div style="font-size: 28px; font-weight: 800;"><%= @projects.count { |p| p.status == 'completed' } %></div>
+    </div>
+  </div>
+</div>
+
+<!-- Search & Filter Bar -->
+<div class="pm-card" style="margin-bottom: 24px; border-radius: 14px;">
+  <div style="padding: 16px 20px;">
+    <%= form_with url: projects_path, method: :get, local: true, style: "display: flex; gap: 12px; align-items: center;" do |form| %>
+      <div style="position: relative; flex: 1; max-width: 500px;">
+        <span class="material-symbols-outlined" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 20px; color: var(--text-muted);">search</span>
+        <%= form.text_field :q, value: @query, placeholder: "Search projects by name, code, or description...", class: "form-control", style: "padding-left: 44px; border-radius: 10px;" %>
+      </div>
+      <%= form.submit "Search", class: "btn btn-primary", style: "border-radius: 10px;" %>
+      <% if @query.present? %>
+        <%= link_to "Clear", projects_path, class: "btn btn-ghost", style: "border-radius: 10px;" %>
+      <% end %>
+    <% end %>
+  </div>
 </div>
 
 <% if @projects.any? %>
